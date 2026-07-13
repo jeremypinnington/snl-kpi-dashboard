@@ -107,6 +107,7 @@
   <nav>
     <a href="index.html" class="active">KPI Dashboard</a>
     <a href="capability.html">Safety, Capability &amp; HR</a>
+    <a href="conversion.html">Conversion Rate</a>
   </nav>
 </header>
 <main>
@@ -138,7 +139,7 @@ const DATA = [
     { kpi: "≥ 75% fleet utilisation", status: "green", value: 80.3, target: 75, unit: "%", tlabel: "Target ≥ 75%", progress: "FY 25/26 utilisation is 80.3%" },
     { kpi: "≥ 95% on-time departure (first job)", status: "red", value: 81.03, target: 95, unit: "%", tlabel: "Target ≥ 95%", progress: "OTD for FY25/26 is 81.03%" },
     { kpi: "≤ 3% damage incident rate", status: "green", value: 0.5, target: 3, unit: "%", invert: true, tlabel: "Target ≤ 3%", progress: "Damage incident rate for FY25/26 is 0.5%" },
-    { kpi: "≥ 90% damage claims resolved <14 days", status: "gray", tlabel: "Target ≥ 90%", progress: "Still awaiting final results" },
+    { kpi: "≥ 90% damage claims resolved <14 days", status: "red", value: 80, target: 90, unit: "%", tlabel: "Target ≥ 90%", progress: "80% of damage claims resolved within 14 days in FY25/26" },
     { kpi: "≥ 97% MSU readiness ratio", status: "green", value: 100, target: 97, unit: "%", tlabel: "Target ≥ 97%", progress: "FY 25/26 MSU readiness is 100%" }
   ]},
   { section: "People & Training", kpis: [
@@ -158,7 +159,6 @@ const DATA = [
     { kpi: "Create B2B metrics document", status: "green", progress: "Document created" }
   ]},
   { section: "Technology & Systems", kpis: [
-    { kpi: "MS Teams calling — click-to-call & transcription", status: "green", progress: "Live since May 2026. Ongoing embedding into sales workflow." },
     { kpi: "Integrate systems into single pane of glass (SPOG)", status: "red", progress: "Project SPOG Phase 1 remains in progress — significantly delayed" },
     { kpi: "Further automate Sophiie AI assistant", status: "orange", progress: "TBC upon completion of SPOG Phase 1" },
     { kpi: "Website upgrade", status: "red", progress: "TBC upon completion of SPOG Phase 1" },

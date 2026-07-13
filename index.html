@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>S+L Leadership KPIs — FY 2025/26</title>
+<style>
+  :root {
+    --navy: #1B3A6B;
+    --orange: #E87722;
+    --green: #1D7A4A;
+    --teal: #0D7377;
+    --dark: #1C1C2E;
+    --gray: #4A5568;
+    --red: #DC2626;
+    --bg-blue: #EBF3FB;
+    --bg-green: #E8F5EE;
+    --bg-orange: #FEF3E8;
+    --bg-red: #FDEDED;
+    --bg-gray: #F5F7FA;
+    --hdr-blue: #CADCFC;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-gray);
+    color: var(--dark);
+    line-height: 1.5;
+  }
+  header {
+    background: var(--navy);
+    color: #fff;
+    padding: 32px 24px 28px;
+  }
+  .header-inner { max-width: 1100px; margin: 0 auto; }
+  .brand { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--hdr-blue); font-weight: 600; }
+  header h1 { font-size: 28px; margin-top: 6px; font-weight: 700; }
+  .asof { margin-top: 8px; font-size: 14px; color: #B0C4E8; }
+  main { max-width: 1100px; margin: 0 auto; padding: 28px 24px 56px; }
+
+  /* Summary row */
+  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 12px; }
+  .stat {
+    background: #fff; border-radius: 10px; padding: 18px 16px;
+    border-top: 4px solid var(--gray);
+    box-shadow: 0 1px 3px rgba(28,28,46,.08);
+  }
+  .stat .num { font-size: 32px; font-weight: 800; }
+  .stat .lbl { font-size: 12.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); font-weight: 600; margin-top: 2px; }
+  .stat.green  { border-top-color: var(--green); }  .stat.green .num  { color: var(--green); }
+  .stat.orange { border-top-color: var(--orange); } .stat.orange .num { color: var(--orange); }
+  .stat.red    { border-top-color: var(--red); }    .stat.red .num    { color: var(--red); }
+  .stat.gray   { border-top-color: var(--gray); }   .stat.gray .num   { color: var(--gray); }
+
+  /* Progress bar */
+  .progress-wrap { background:#fff; border-radius:10px; padding:18px 20px; box-shadow:0 1px 3px rgba(28,28,46,.08); margin-bottom:32px; }
+  .progress-wrap .plabel { font-size:13px; font-weight:600; color:var(--gray); margin-bottom:10px; }
+  .bar { display:flex; height:14px; border-radius:7px; overflow:hidden; }
+  .bar div { height:100%; }
+
+  /* Sections */
+  section { margin-bottom: 34px; }
+  h2 {
+    font-size: 17px; color: var(--navy); text-transform: uppercase; letter-spacing: 1.5px;
+    border-bottom: 3px solid var(--teal); padding-bottom: 8px; margin-bottom: 16px;
+  }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+  .card {
+    background: #fff; border-radius: 10px; padding: 16px 18px;
+    box-shadow: 0 1px 3px rgba(28,28,46,.08);
+    border-left: 5px solid var(--gray);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .card.green  { border-left-color: var(--green); }
+  .card.orange { border-left-color: var(--orange); }
+  .card.red    { border-left-color: var(--red); }
+  .card.gray   { border-left-color: var(--gray); }
+  .kpi-title { font-weight: 700; font-size: 15px; }
+  .pill {
+    align-self: flex-start; font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .8px; padding: 3px 10px; border-radius: 20px;
+  }
+  .pill.green  { background: var(--bg-green);  color: var(--green); }
+  .pill.orange { background: var(--bg-orange); color: var(--orange); }
+  .pill.red    { background: var(--bg-red);    color: var(--red); }
+  .pill.gray   { background: var(--bg-gray);   color: var(--gray); border: 1px solid #E2E8F0; }
+  .prog { font-size: 13.5px; color: var(--gray); }
+  footer { text-align: center; font-size: 12px; color: var(--gray); padding-bottom: 40px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand">Stash + Lode</div>
+    <h1>Leadership Team KPIs — FY 2025/26</h1>
+    <div class="asof">Progress as at June 2026</div>
+  </div>
+</header>
+<main>
+  <div class="summary" id="summary"></div>
+  <div class="progress-wrap">
+    <div class="plabel" id="plabel"></div>
+    <div class="bar" id="bar"></div>
+  </div>
+  <div id="sections"></div>
+</main>
+<footer>Stash + Lode — Leadership KPI Dashboard · FY 2025/26 · Updated June 2026</footer>
+<script>
+const STATUS = {
+  green:  "Completed",
+  orange: "Partially completed",
+  red:    "Not completed",
+  gray:   "Pending result"
+};
+const DATA = [
+  { section: "Operations", kpis: [
+    { kpi: "≥ 75% fleet utilisation", status: "green", progress: "FY 25/26 utilisation is 80.3%" },
+    { kpi: "≥ 95% on-time departure (first job)", status: "red", progress: "OTD for FY25/26 is 81.03%" },
+    { kpi: "≤ 3% damage incident rate", status: "green", progress: "Damage incident rate for FY25/26 is 0.5%" },
+    { kpi: "≥ 90% damage claims resolved <14 days", status: "gray", progress: "Still awaiting final results" },
+    { kpi: "≥ 97% MSU readiness ratio", status: "green", progress: "FY 25/26 MSU readiness is 100%" }
+  ]},
+  { section: "People & Training", kpis: [
+    { kpi: "Video-based training for removalists & MSU packers", status: "red", progress: "No suitable downtime was available to begin filming in FY25/26" },
+    { kpi: "Secure all yards with centralised access control", status: "orange", progress: "CCTV upgrade complete (May 2026) — 10 cameras installed. Access control system decision pending." },
+    { kpi: "Maintain ≥ 3 fully trained MSU logistics operators", status: "green", progress: "Total current fully trained MSU operators: 4" }
+  ]},
+  { section: "Storage Performance", kpis: [
+    { kpi: "Average STO conversion ≥ 30%", status: "red", progress: "Average STO conversion in FY 25/26 is 19.25%" },
+    { kpi: "MSU occupancy ≥ 85% (post-delivery)", status: "red", progress: "MSU occupancy: 80% — reflects 96 new units added to fleet; recovery underway" },
+    { kpi: "MSU occupancy ≥ 85% avg per year", status: "green", progress: "FY 25/26 average MSU occupancy is 94.9%" },
+    { kpi: "MSUs sold per week: 7.5 per depot", status: "green", progress: "June avg weekly MSU sales: ~12.3 (53 move-ins / 4.3 weeks)" },
+    { kpi: "2.5 MSU labour jobs per week", status: "red", progress: "Average MSU labour jobs per week in FY25/26 is 1.875" }
+  ]},
+  { section: "Sales & Business Development", kpis: [
+    { kpi: "Convert 20 companies from B2B list to partners", status: "green", progress: "22 business partnerships confirmed (maintained from May)" },
+    { kpi: "Create B2B metrics document", status: "green", progress: "Document created" }
+  ]},
+  { section: "Technology & Systems", kpis: [
+    { kpi: "MS Teams calling — click-to-call & transcription", status: "green", progress: "Live since May 2026. Ongoing embedding into sales workflow." },
+    { kpi: "Integrate systems into single pane of glass (SPOG)", status: "red", progress: "Project SPOG Phase 1 remains in progress — significantly delayed" },
+    { kpi: "Further automate Sophiie AI assistant", status: "orange", progress: "TBC upon completion of SPOG Phase 1" },
+    { kpi: "Website upgrade", status: "red", progress: "TBC upon completion of SPOG Phase 1" },
+    { kpi: "Incorporate access control into single platform", status: "red", progress: "Awaiting decision on access control system" }
+  ]}
+];
+
+const counts = { green: 0, orange: 0, red: 0, gray: 0 };
+DATA.forEach(s => s.kpis.forEach(k => counts[k.status]++));
+const total = Object.values(counts).reduce((a, b) => a + b, 0);
+
+document.getElementById("summary").innerHTML = ["green","orange","red","gray"].map(c =>
+  `<div class="stat ${c}"><div class="num">${counts[c]}</div><div class="lbl">${STATUS[c]}</div></div>`
+).join("");
+
+const colors = { green: "var(--green)", orange: "var(--orange)", red: "var(--red)", gray: "var(--gray)" };
+document.getElementById("bar").innerHTML = ["green","orange","red","gray"].map(c =>
+  `<div style="width:${(counts[c]/total*100).toFixed(1)}%;background:${colors[c]}"></div>`
+).join("");
+document.getElementById("plabel").textContent =
+  `${counts.green} of ${total} KPIs completed (${Math.round(counts.green/total*100)}%)`;
+
+document.getElementById("sections").innerHTML = DATA.map(s => `
+  <section>
+    <h2>${s.section}</h2>
+    <div class="cards">
+      ${s.kpis.map(k => `
+        <div class="card ${k.status}">
+          <div class="kpi-title">${k.kpi}</div>
+          <span class="pill ${k.status}">${STATUS[k.status]}</span>
+          <div class="prog">${k.progress}</div>
+        </div>`).join("")}
+    </div>
+  </section>`).join("");
+</script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>S+L Safety, Capability & HR — FY 2025/26</title>
+<style>
+  :root {
+    --navy: #1B3A6B;
+    --orange: #E87722;
+    --green: #1D7A4A;
+    --teal: #0D7377;
+    --dark: #1C1C2E;
+    --gray: #4A5568;
+    --red: #DC2626;
+    --bg-blue: #EBF3FB;
+    --bg-green: #E8F5EE;
+    --bg-orange: #FEF3E8;
+    --bg-gray: #F5F7FA;
+    --hdr-blue: #CADCFC;
+    --track: #E2E8F0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-gray);
+    color: var(--dark);
+    line-height: 1.5;
+  }
+  header { background: var(--navy); color: #fff; padding: 32px 24px 0; }
+  .header-inner { max-width: 1180px; margin: 0 auto; }
+  .brand { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--hdr-blue); font-weight: 600; }
+  header h1 { font-size: 28px; margin-top: 6px; font-weight: 700; }
+  .asof { margin-top: 8px; font-size: 14px; color: #B0C4E8; }
+  nav { max-width: 1180px; margin: 20px auto 0; display: flex; gap: 4px; }
+  nav a {
+    color: #B0C4E8; text-decoration: none; font-size: 14px; font-weight: 600;
+    padding: 10px 18px; border-radius: 8px 8px 0 0;
+  }
+  nav a.active { background: var(--bg-gray); color: var(--navy); }
+  nav a:not(.active):hover { background: rgba(255,255,255,.08); color: #fff; }
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 56px; }
+
+  .callout {
+    background: var(--bg-green); border-left: 5px solid var(--green);
+    border-radius: 10px; padding: 20px 22px; margin-bottom: 30px;
+  }
+  .callout h3 { color: var(--green); font-size: 16px; margin-bottom: 6px; }
+  .callout p { font-size: 14.5px; color: var(--dark); }
+
+  section { margin-bottom: 34px; }
+  h2 {
+    font-size: 17px; color: var(--navy); text-transform: uppercase; letter-spacing: 1.5px;
+    border-bottom: 3px solid var(--teal); padding-bottom: 8px; margin-bottom: 16px;
+  }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
+  .card {
+    background: #fff; border-radius: 10px; padding: 20px 20px 18px;
+    box-shadow: 0 1px 3px rgba(28,28,46,.08);
+    border-top: 4px solid var(--green);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .card.orange { border-top-color: var(--orange); }
+  .metric-name { font-weight: 700; font-size: 15px; }
+  .big-row { display: flex; align-items: baseline; gap: 10px; }
+  .big { font-size: 34px; font-weight: 800; color: var(--green); }
+  .card.orange .big { color: var(--orange); }
+  .big-sub { font-size: 13px; color: var(--gray); font-weight: 600; }
+
+  .compare { display: flex; flex-direction: column; gap: 8px; margin-top: 2px; }
+  .cmp-row { display: grid; grid-template-columns: 92px 1fr 74px; align-items: center; gap: 8px; font-size: 12px; }
+  .cmp-label { color: var(--gray); font-weight: 700; text-align: right; }
+  .cmp-track { background: var(--track); border-radius: 5px; height: 12px; overflow: hidden; }
+  .cmp-fill { height: 100%; border-radius: 5px; }
+  .cmp-val { font-weight: 700; color: var(--dark); }
+  .snl .cmp-fill { background: var(--green); }
+  .card.orange .snl .cmp-fill { background: var(--orange); }
+  .ind .cmp-fill { background: #94A3B8; }
+
+  .note { font-size: 12.5px; color: var(--gray); }
+  .badge {
+    align-self: flex-start; font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .8px; padding: 3px 10px; border-radius: 20px;
+    background: var(--bg-green); color: var(--green);
+  }
+  .card.orange .badge { background: var(--bg-orange); color: var(--orange); }
+
+  .sources { background: #fff; border-radius: 10px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(28,28,46,.08); }
+  .sources h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); margin-bottom: 8px; }
+  .sources ul { list-style: none; }
+  .sources li { font-size: 12.5px; color: var(--gray); margin-bottom: 4px; }
+  .sources a { color: var(--teal); }
+  footer { text-align: center; font-size: 12px; color: var(--gray); padding-bottom: 40px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand">Stash + Lode</div>
+    <h1>Safety, Capability &amp; HR — FY 2025/26</h1>
+    <div class="asof">How S+L compares with Australian industry benchmarks</div>
+  </div>
+  <nav>
+    <a href="index.html">KPI Dashboard</a>
+    <a href="capability.html" class="active">Safety, Capability &amp; HR</a>
+  </nav>
+</header>
+<main>
+  <div class="callout">
+    <h3>Proposed additions to the FY KPI list</h3>
+    <p>Stash + Lode has maintained high rates of success across Safety, Capability and Human Resources — in most measures performing well ahead of comparable Australian transport, logistics and removals businesses. These metrics are strong, board-ready measures and are recommended as positive additions to the Leadership Team KPI list for FY 2026/27.</p>
+  </div>
+
+  <section>
+    <h2>Safety</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="metric-name">Lost Time Incidents</div>
+        <div class="big-row"><span class="big">1</span><span class="big-sub">for the full year</span></div>
+        <div class="note">Transport, postal &amp; warehousing is one of Australia's highest-risk sectors — 9.4 serious claims per million hours worked vs a 6.8 national average. A single LTI across the year is an exceptional result for a physical removals &amp; storage operation.</div>
+        <span class="badge">Ahead of industry</span>
+      </div>
+      <div class="card">
+        <div class="metric-name">Reportable Safety Incidents</div>
+        <div class="big-row"><span class="big">0</span><span class="big-sub">for the full year</span></div>
+        <div class="note">Zero notifiable incidents in a sector that accounts for a disproportionate share of Australia's serious claims — transport &amp; warehousing is among the 6 industries responsible for 61% of all serious workers' compensation claims nationally.</div>
+        <span class="badge">Ahead of industry</span>
+      </div>
+      <div class="card">
+        <div class="metric-name">Workers Compensation Claims</div>
+        <div class="big-row"><span class="big">1</span><span class="big-sub">claim for the year</span></div>
+        <div class="note">In NSW transport, postal &amp; warehousing, roughly 41 in every 1,000 workers lodge an injury claim each year (vs 28 per 1,000 all-industry). One claim across the S+L workforce sits well below the sector's expected claim rate.</div>
+        <span class="badge">Ahead of industry</span>
+      </div>
+      <div class="card">
+        <div class="metric-name">Safety Improvements</div>
+        <div class="big-row"><span class="big" style="font-size:22px">New MSU build safety rules</span></div>
+        <div class="note">Proactive rule-setting for MSU builds — continuous improvement rather than incident-driven change, consistent with the leading-indicator approach regulators encourage.</div>
+        <span class="badge">Proactive</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Capability &amp; Human Resources</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="metric-name">Office Staff Retention</div>
+        <div class="big-row"><span class="big">100%</span></div>
+        <div class="compare">
+          <div class="cmp-row snl"><span class="cmp-label">S+L</span><div class="cmp-track"><div class="cmp-fill" style="width:100%"></div></div><span class="cmp-val">100%</span></div>
+          <div class="cmp-row ind"><span class="cmp-label">AU average</span><div class="cmp-track"><div class="cmp-fill" style="width:84%"></div></div><span class="cmp-val">~84%</span></div>
+        </div>
+        <div class="note">The 12-month average employee turnover rate across Australian organisations is ~16% — S+L retained every office staff member.</div>
+        <span class="badge">Ahead of industry</span>
+      </div>
+      <div class="card">
+        <div class="metric-name">HC/HR Driver Retention</div>
+        <div class="big-row"><span class="big">100%</span></div>
+        <div class="compare">
+          <div class="cmp-row snl"><span class="cmp-label">S+L</span><div class="cmp-track"><div class="cmp-fill" style="width:100%"></div></div><span class="cmp-val">100%</span></div>
+          <div class="cmp-row ind"><span class="cmp-label">AU average</span><div class="cmp-track"><div class="cmp-fill" style="width:84%"></div></div><span class="cmp-val">~84%</span></div>
+        </div>
+        <div class="note">Amid a national driver shortage described by the NRTA as a "ticking timebomb", retaining 100% of heavy-vehicle drivers is a major competitive advantage.</div>
+        <span class="badge">Ahead of industry</span>
+      </div>
+      <div class="card">
+        <div class="metric-name">HC/HR Driver Capability</div>
+        <div class="big-row"><span class="big">4</span><span class="big-sub">drivers, full year</span></div>
+        <div class="note">Clayton, Tom, Ronan and Ben each completed the full year — a stable, fully capable heavy-vehicle driver bench in a market where qualified drivers are in chronic short supply.</div>
+        <span class="badge">Ahead of industry</span>
+      </div>
+      <div class="card orange">
+        <div class="metric-name">Offsider Retention / Turnover</div>
+        <div class="big-row"><span class="big">75%</span><span class="big-sub">turnover — 1 retained, 3 lost, 3 added</span></div>
+        <div class="note">High churn is typical for casual, entry-level removals labour nationally. Headcount was fully replenished (3 added), keeping crews at strength — a realistic baseline to improve against if adopted as a KPI.</div>
+        <span class="badge">Watch metric</span>
+      </div>
+      <div class="card orange">
+        <div class="metric-name">Employment Contracts</div>
+        <div class="big-row"><span class="big">83%</span><span class="big-sub">coverage</span></div>
+        <div class="compare">
+          <div class="cmp-row snl"><span class="cmp-label">S+L</span><div class="cmp-track"><div class="cmp-fill" style="width:83%"></div></div><span class="cmp-val">83%</span></div>
+          <div class="cmp-row ind"><span class="cmp-label">Best practice</span><div class="cmp-track"><div class="cmp-fill" style="width:100%"></div></div><span class="cmp-val">100%</span></div>
+        </div>
+        <div class="note">One new offsider not yet on a signed contract — a single signature from 100% coverage of signed written contracts, the Australian best-practice standard.</div>
+        <span class="badge">Nearly there</span>
+      </div>
+      <div class="card">
+        <div class="metric-name">Engagement &amp; Salary Review Meetings</div>
+        <div class="big-row"><span class="big">100%</span><span class="big-sub">of contracted operational crew</span></div>
+        <div class="note">Every contracted operational crew member received an engagement and salary review meeting. Nationally, 56% of employees had recently considered leaving their job, with uncompetitive pay the top reason — structured reviews directly counter the biggest attrition driver.</div>
+        <span class="badge">Ahead of industry</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sources">
+      <h3>Benchmark sources</h3>
+      <ul>
+        <li>Safe Work Australia — <a href="https://data.safeworkaustralia.gov.au/insights/key-whs-statistics-australia/latest-release" target="_blank" rel="noopener">Key Work Health &amp; Safety Statistics Australia</a> (serious claim frequency rates by industry)</li>
+        <li>SafeWork NSW — <a href="https://www.safework.nsw.gov.au/your-industry/transport,-postal-and-warehousing" target="_blank" rel="noopener">Transport, postal &amp; warehousing industry profile</a> (injury claims per 1,000 workers)</li>
+        <li>Foremind — <a href="https://www.foremind.com.au/post/employee-turnover-statistics" target="_blank" rel="noopener">Employee Turnover Statistics Australia</a> (~16% average annual turnover)</li>
+        <li>Transvirtual — <a href="https://www.transvirtual.com/blog/the-driver-shortage-crisis-in-australia/" target="_blank" rel="noopener">The Driver Shortage Crisis in Australia</a></li>
+        <li>Reward Gateway — <a href="https://www.rewardgateway.com/au/blog/employee-engagement-retention" target="_blank" rel="noopener">Australian Employee Engagement &amp; Retention</a> (56% considered leaving; pay top driver)</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<footer>Stash + Lode — Safety, Capability &amp; HR Report · FY 2025/26</footer>
+</body>
+</html>

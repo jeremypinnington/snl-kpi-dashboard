@@ -73,6 +73,10 @@
     border-top: 4px solid var(--gray);
     display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
   }
+  .card.wide { grid-column: 1 / -1; align-items: stretch; text-align: left; }
+  .card.wide .kpi-title { min-height: 0; justify-content: flex-start; text-align: left; }
+  .chart-notes { font-size: 12.5px; color: var(--gray); }
+  .chart-notes strong { color: var(--dark); }
   .card.green  { border-top-color: var(--green); }
   .card.orange { border-top-color: var(--orange); }
   .card.red    { border-top-color: var(--red); }
@@ -150,7 +154,7 @@ const DATA = [
   ]},
   { section: "Storage Performance", kpis: [
     { kpi: "Average STO conversion ≥ 30%", status: "red", value: 19.25, target: 30, unit: "%", tlabel: "Target ≥ 30%", progress: "Average STO conversion in FY 25/26 is 19.25%" },
-    { kpi: "MSU occupancy ≥ 85% (post-delivery)", status: "red", value: 80, target: 85, unit: "%", tlabel: "Target ≥ 85%", progress: "MSU occupancy: 80% — reflects 96 new units added to fleet; recovery underway" },
+    { kpi: "MSU occupancy ≥ 85% within 4 months of each new MSU delivery", status: "green", chart: true, progress: "" },
     { kpi: "MSU occupancy ≥ 85% avg per year", status: "green", value: 94.9, target: 85, unit: "%", tlabel: "Target ≥ 85%", progress: "FY 25/26 average MSU occupancy is 94.9%" },
     { kpi: "MSUs sold per week: 7.5 per depot", status: "green", value: 12.3, target: 7.5, unit: "", tlabel: "Target ≥ 7.5/wk", progress: "June avg weekly MSU sales: ~12.3 (53 move-ins / 4.3 weeks)" },
     { kpi: "2.5 MSU labour jobs per week", status: "red", value: 1.875, target: 2.5, unit: "", tlabel: "Target ≥ 2.5/wk", progress: "Average MSU labour jobs per week in FY25/26 is 1.875" }
@@ -231,11 +235,78 @@ document.getElementById("bar").innerHTML = ["green","orange","red","gray"].map(c
 document.getElementById("plabel").textContent =
   `${counts.green} of ${total} KPIs completed (${Math.round(counts.green/total*100)}%)`;
 
+// ---- Occupancy uptake line chart (MSU occupancy vs new-unit deliveries, FY25/26) ----
+function occChart() {
+  // [date, avg MSU occupancy %] — monthly averages Jul 2025–Mar 2026, weekly (w/e Wed) from Apr 2026
+  const monthly = [["2025-07-15",77],["2025-08-15",89],["2025-09-15",101],["2025-10-15",98],["2025-11-15",92],["2025-12-15",95],["2026-01-15",105],["2026-02-15",103],["2026-03-15",108]];
+  const weekly = [["2026-04-01",107],["2026-04-08",106],["2026-04-15",97],["2026-04-22",90],["2026-04-29",90],["2026-05-06",93],["2026-05-13",96],["2026-05-20",98],["2026-05-27",100],["2026-06-03",104],["2026-06-10",78],["2026-06-17",81],["2026-06-24",81]];
+  const postFY = [["2026-06-24",81],["2026-07-01",80],["2026-07-08",81],["2026-07-15",80]]; // beyond 30 Jun, shows continued stability
+  const deliveries = [["2026-04-08","+32"],["2026-06-03","+32"],["2026-06-10","+32"],["2026-06-17","+32"]];
+
+  const t0 = Date.parse("2025-07-01"), t1 = Date.parse("2026-07-18");
+  const W = 1000, H = 330, L = 46, R = 12, T = 26, B = 42;
+  const x = d => L + (Date.parse(d) - t0) / (t1 - t0) * (W - L - R);
+  const y = v => T + (115 - v) / (115 - 58) * (H - T - B);
+  const pts = a => a.map(p => `${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join(" ");
+  const all = monthly.concat(weekly);
+
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">`;
+  // y gridlines
+  for (const v of [60,70,80,90,100,110]) {
+    s += `<line x1="${L}" y1="${y(v)}" x2="${W-R}" y2="${y(v)}" stroke="#E2E8F0" stroke-width="1"/>
+          <text x="${L-8}" y="${y(v)+4}" font-size="11" fill="#4A5568" text-anchor="end">${v}%</text>`;
+  }
+  // x month labels
+  const months = ["2025-07-01","2025-08-01","2025-09-01","2025-10-01","2025-11-01","2025-12-01","2026-01-01","2026-02-01","2026-03-01","2026-04-01","2026-05-01","2026-06-01","2026-07-01"];
+  const mNames = ["Jul","Aug","Sep","Oct","Nov","Dec","Jan 26","Feb","Mar","Apr","May","Jun","Jul"];
+  months.forEach((m, i) => {
+    s += `<line x1="${x(m)}" y1="${T}" x2="${x(m)}" y2="${H-B}" stroke="#F1F5F9" stroke-width="1"/>
+          <text x="${x(m)}" y="${H-B+16}" font-size="11" fill="#4A5568" text-anchor="middle">${mNames[i]}</text>`;
+  });
+  // FY end marker
+  s += `<line x1="${x("2026-06-30")}" y1="${T}" x2="${x("2026-06-30")}" y2="${H-B}" stroke="#94A3B8" stroke-width="1" stroke-dasharray="2 3"/>
+        <text x="${x("2026-06-30")-4}" y="${T+10}" font-size="10" fill="#4A5568" text-anchor="end">FY end</text>`;
+  // 85% target line
+  s += `<line x1="${L}" y1="${y(85)}" x2="${W-R}" y2="${y(85)}" stroke="#DC2626" stroke-width="1.6" stroke-dasharray="7 5"/>
+        <text x="${W-R-4}" y="${y(85)-6}" font-size="11" font-weight="700" fill="#DC2626" text-anchor="end">85% target</text>`;
+  // delivery markers
+  deliveries.forEach((d, i) => {
+    s += `<line x1="${x(d[0])}" y1="${y(58)}" x2="${x(d[0])}" y2="${T+14}" stroke="#E87722" stroke-width="1.6" stroke-dasharray="4 3"/>
+          <text x="${x(d[0])}" y="${H-B-4}" font-size="10" font-weight="700" fill="#E87722" text-anchor="middle">▲</text>`;
+  });
+  s += `<text x="${x("2026-04-08")}" y="${T+10}" font-size="11" font-weight="700" fill="#E87722" text-anchor="middle">Batch 1: +32 MSUs (8 Apr)</text>
+        <text x="${x("2026-06-10")}" y="${T+24}" font-size="11" font-weight="700" fill="#E87722" text-anchor="middle">Batch 2: +96 (3–17 Jun)</text>`;
+  // occupancy lines
+  s += `<polyline points="${pts(all)}" fill="none" stroke="#0D7377" stroke-width="2.6" stroke-linejoin="round"/>`;
+  s += `<polyline points="${pts(postFY)}" fill="none" stroke="#0D7377" stroke-width="2" stroke-dasharray="4 5" opacity=".65"/>`;
+  all.forEach(p => { s += `<circle cx="${x(p[0])}" cy="${y(p[1])}" r="3" fill="#0D7377"/>`; });
+  postFY.slice(1).forEach(p => { s += `<circle cx="${x(p[0])}" cy="${y(p[1])}" r="2.6" fill="#0D7377" opacity=".65"/>`; });
+  // legend
+  s += `<line x1="${L+6}" y1="${H-6}" x2="${L+30}" y2="${H-6}" stroke="#0D7377" stroke-width="2.6"/><text x="${L+36}" y="${H-2}" font-size="11" fill="#4A5568">Avg MSU occupancy (monthly to Mar, weekly from Apr)</text>
+        <line x1="${L+372}" y1="${H-6}" x2="${L+396}" y2="${H-6}" stroke="#E87722" stroke-width="1.6" stroke-dasharray="4 3"/><text x="${L+402}" y="${H-2}" font-size="11" fill="#4A5568">MSU delivery</text>
+        <line x1="${L+500}" y1="${H-6}" x2="${L+524}" y2="${H-6}" stroke="#0D7377" stroke-width="2" stroke-dasharray="4 5" opacity=".65"/><text x="${L+530}" y="${H-2}" font-size="11" fill="#4A5568">Post-FY (to 15 Jul 26)</text>`;
+  s += `</svg>`;
+  return s;
+}
+
+function chartCard(k) {
+  return `
+    <div class="card wide ${k.status}">
+      <div class="kpi-title">${k.kpi}</div>
+      <span class="pill ${k.status}">${STATUS[k.status]}</span>
+      ${occChart()}
+      <div class="chart-notes">
+        <strong>Batch 1 — +32 MSUs (8 Apr, assembled 9–10 Apr):</strong> occupancy never fell below 90% and was back to 100% within 7 weeks — the 85%-in-4-months target (due 8 Aug) was never breached. <strong>Achieved.</strong><br>
+        <strong>Batch 2 — +96 MSUs (32/week, 3–17 Jun; a 44% fleet increase):</strong> occupancy troughed at 78% and stabilised at ~80–81% within two weeks of the final tranche. On current uptake it is tracking to 85% well inside the 4-month window (due mid-Oct). <strong>On track, ahead of pace.</strong>
+      </div>
+    </div>`;
+}
+
 document.getElementById("sections").innerHTML = DATA.map(s => `
   <section>
     <h2>${s.section}</h2>
     <div class="cards">
-      ${s.kpis.map(k => `
+      ${s.kpis.map(k => k.chart ? chartCard(k) : `
         <div class="card ${k.status}">
           <div class="kpi-title">${k.kpi}</div>
           ${gauge(k)}

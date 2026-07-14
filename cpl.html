@@ -52,6 +52,7 @@
   section { margin-bottom: 34px; }
   .mapwrap { background: #fff; border-radius: 10px; padding: 14px; box-shadow: 0 1px 3px rgba(28,28,46,.08); }
   #map { height: 560px; border-radius: 8px; }
+  #map .leaflet-tile-pane { filter: grayscale(1); }
   .legend {
     display: flex; flex-wrap: wrap; gap: 18px; align-items: center;
     padding: 12px 6px 2px; font-size: 12.5px; color: var(--gray);
@@ -100,7 +101,7 @@
         <span><span class="sw" style="background:#E8B322"></span>$70–85</span>
         <span><span class="sw" style="background:#E87722"></span>$85–100</span>
         <span><span class="sw" style="background:#DC2626"></span>High CPL &gt; $100</span>
-        <span><span class="sw" style="background:#94A3B8"></span>No conversions</span>
+        <span><span class="sw" style="background:#9CC3E6"></span>No conversions</span>
       </div>
       <div class="mapnote">Hover or click a suburb for full metrics. Suburb boundaries © State of Queensland (Department of Resources), CC BY 4.0.</div>
     </div>
@@ -180,7 +181,7 @@ document.getElementById("summary").innerHTML = `
 
 // ---- Colour scale (CPL: low = good/green) ----
 function cplColor(cpl) {
-  if (cpl === null) return "#94A3B8";
+  if (cpl === null) return "#9CC3E6";
   if (cpl < 55) return "#1D7A4A";
   if (cpl < 70) return "#84B75B";
   if (cpl < 85) return "#E8B322";
@@ -190,9 +191,10 @@ function cplColor(cpl) {
 
 // ---- Map ----
 const map = L.map("map").setView([-26.55, 152.95], 9);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  maxZoom: 18
+L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  subdomains: "abcd",
+  maxZoom: 19
 }).addTo(map);
 
 // Map each gazetted QLD locality to its row in DATA (ad locations can span several suburbs)
@@ -323,7 +325,7 @@ function render() {
       <td style="background:${shade(Math.sqrt(d.clk / maxClk))}">${d.clk.toLocaleString()}</td>
       <td style="background:${shade(d.cr / maxCr)}">${d.cr.toFixed(2)}%</td>
       <td style="background:${shade(Math.sqrt(d.conv / maxConv))}">${d.conv}</td>
-      <td style="background:${d.cpl === null ? "rgba(148,163,184,.18)" : shade(1 - (d.cpl - minCpl) / (maxCpl - minCpl))}">${d.cpl === null ? "—" : "$" + d.cpl.toFixed(2)}</td>
+      <td style="background:${d.cpl === null ? "rgba(156,195,230,.25)" : shade(1 - (d.cpl - minCpl) / (maxCpl - minCpl))}">${d.cpl === null ? "—" : "$" + d.cpl.toFixed(2)}</td>
     </tr>`).join("");
 }
 document.querySelectorAll("#tbl th").forEach(th => th.addEventListener("click", () => {

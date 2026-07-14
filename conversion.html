@@ -76,6 +76,15 @@
   section.client .tag { background: var(--bg-orange); color: var(--orange); }
   section.transport .tag { background: var(--bg-red); color: var(--red); }
   section.positive .tag { background: var(--bg-green); color: var(--green); }
+
+  .breakdown { background: #fff; border-radius: 10px; padding: 20px 22px; box-shadow: 0 1px 3px rgba(28,28,46,.08); }
+  .bd-row { display: grid; grid-template-columns: 58px 1fr; gap: 14px; align-items: start; padding: 9px 0; border-bottom: 1px solid var(--bg-gray); }
+  .bd-row:last-of-type { border-bottom: none; }
+  .bd-pct { font-size: 19px; font-weight: 800; color: var(--navy); text-align: right; line-height: 1.2; }
+  .bd-track { background: var(--track); border-radius: 5px; height: 10px; overflow: hidden; margin: 5px 0 6px; }
+  .bd-fill { height: 100%; border-radius: 5px; background: var(--teal); }
+  .bd-desc { font-size: 13px; color: var(--gray); }
+  .bd-note { font-size: 12px; color: var(--gray); font-style: italic; margin-top: 12px; }
   footer { text-align: center; font-size: 12px; color: var(--gray); padding-bottom: 40px; }
 </style>
 </head>
@@ -100,6 +109,68 @@
     </div>
     <p><strong>Conversion rate flat — main causes below.</strong> The gap to target is driven by a mix of client-side factors (lead quality, timing, budget) and transport/pricing constraints on larger and out-of-area jobs. Brand awareness is clearly building, which is improving lead quality over time.</p>
   </div>
+
+  <section>
+    <h2>Non-conversion overview — where the other ~80% goes</h2>
+    <div class="breakdown">
+      <div class="bd-row">
+        <div class="bd-pct">20%</div>
+        <div><div class="bd-track"><div class="bd-fill" style="width:100%"></div></div>
+        <div class="bd-desc">Provided pricing — client selected an alternate storage option. Percentage is higher when and where a major storage provider has specials or a price war (i.e. currently in Gympie).</div></div>
+      </div>
+      <div class="bd-row">
+        <div class="bd-pct">15%</div>
+        <div><div class="bd-track"><div class="bd-fill" style="width:75%"></div></div>
+        <div class="bd-desc">Not contactable — no pricing provided due to lack of information/inventory.</div></div>
+      </div>
+      <div class="bd-row">
+        <div class="bd-pct">10%</div>
+        <div><div class="bd-track"><div class="bd-fill" style="width:50%"></div></div>
+        <div class="bd-desc">Requested pricing due to lease end notice, but landlord decided to extend the lease.</div></div>
+      </div>
+      <div class="bd-row">
+        <div class="bd-pct">10%</div>
+        <div><div class="bd-track"><div class="bd-fill" style="width:50%"></div></div>
+        <div class="bd-desc">Requested pricing due to lease end; did have to move but was able to move direct to a new rental — some of these may turn into removals jobs.</div></div>
+      </div>
+      <div class="bd-row">
+        <div class="bd-pct">10%</div>
+        <div><div class="bd-track"><div class="bd-fill" style="width:50%"></div></div>
+        <div class="bd-desc">Provided pricing — client advised too expensive. No clear picture of what solution, if any, the client eventually opted for; can include selling goods or stashing at a friend's place.</div></div>
+      </div>
+      <div class="bd-row">
+        <div class="bd-pct">5%</div>
+        <div><div class="bd-track"><div class="bd-fill" style="width:25%"></div></div>
+        <div class="bd-desc">House on market but has not sold, so the enquiry does not convert to a booking.</div></div>
+      </div>
+      <div class="bd-row">
+        <div class="bd-pct">3%</div>
+        <div><div class="bd-track"><div class="bd-fill" style="width:15%"></div></div>
+        <div class="bd-desc">Rents a shipping container instead (particularly areas with larger land sizes).</div></div>
+      </div>
+      <div class="bd-row">
+        <div class="bd-pct">3%</div>
+        <div><div class="bd-track"><div class="bd-fill" style="width:15%"></div></div>
+        <div class="bd-desc">Enquiry made by a friend or relative, not a direct client request — some of these do book, so the total category is possibly 5%.</div></div>
+      </div>
+      <div class="bd-row">
+        <div class="bd-pct">2%</div>
+        <div><div class="bd-track"><div class="bd-fill" style="width:10%"></div></div>
+        <div class="bd-desc">Out of area (these are notified to marketing).</div></div>
+      </div>
+      <div class="bd-row">
+        <div class="bd-pct">1%</div>
+        <div><div class="bd-track"><div class="bd-fill" style="width:5%"></div></div>
+        <div class="bd-desc">Client has no immediate plan to move or store — just considering future options, e.g. downsizing in 12–24 months.</div></div>
+      </div>
+      <div class="bd-row">
+        <div class="bd-pct">1%</div>
+        <div><div class="bd-track"><div class="bd-fill" style="width:5%"></div></div>
+        <div class="bd-desc">Client interested in booking, but too many red flags in terms of their ability to pay storage fees.</div></div>
+      </div>
+      <div class="bd-note">*Not empirical data — indicative estimates.</div>
+    </div>
+  </section>
 
   <section class="positive">
     <h2>Positives</h2>

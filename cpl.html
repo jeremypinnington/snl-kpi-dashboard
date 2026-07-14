@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>S+L Location CPL Heat Map — FY 2025/26</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+  :root {
+    --navy: #1B3A6B;
+    --orange: #E87722;
+    --green: #1D7A4A;
+    --teal: #0D7377;
+    --dark: #1C1C2E;
+    --gray: #4A5568;
+    --red: #DC2626;
+    --bg-gray: #F5F7FA;
+    --hdr-blue: #CADCFC;
+    --track: #E2E8F0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-gray);
+    color: var(--dark);
+    line-height: 1.5;
+  }
+  header { background: var(--navy); color: #fff; padding: 32px 24px 0; }
+  .header-inner { max-width: 1180px; margin: 0 auto; }
+  .brand { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--hdr-blue); font-weight: 600; }
+  header h1 { font-size: 28px; margin-top: 6px; font-weight: 700; }
+  .asof { margin-top: 8px; font-size: 14px; color: #B0C4E8; }
+  nav { max-width: 1180px; margin: 20px auto 0; display: flex; gap: 4px; flex-wrap: wrap; }
+  nav a {
+    color: #B0C4E8; text-decoration: none; font-size: 14px; font-weight: 600;
+    padding: 10px 18px; border-radius: 8px 8px 0 0;
+  }
+  nav a.active { background: var(--bg-gray); color: var(--navy); }
+  nav a:not(.active):hover { background: rgba(255,255,255,.08); color: #fff; }
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 56px; }
+
+  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .stat { background: #fff; border-radius: 10px; padding: 16px; border-top: 4px solid var(--teal); box-shadow: 0 1px 3px rgba(28,28,46,.08); }
+  .stat .num { font-size: 26px; font-weight: 800; color: var(--navy); }
+  .stat .lbl { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); font-weight: 600; }
+
+  h2 {
+    font-size: 17px; color: var(--navy); text-transform: uppercase; letter-spacing: 1.5px;
+    border-bottom: 3px solid var(--teal); padding-bottom: 8px; margin-bottom: 16px;
+  }
+  section { margin-bottom: 34px; }
+  .mapwrap { background: #fff; border-radius: 10px; padding: 14px; box-shadow: 0 1px 3px rgba(28,28,46,.08); }
+  #map { height: 560px; border-radius: 8px; }
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 18px; align-items: center;
+    padding: 12px 6px 2px; font-size: 12.5px; color: var(--gray);
+  }
+  .legend .sw { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: 6px; vertical-align: -2px; }
+  .mapnote { font-size: 11.5px; color: var(--gray); font-style: italic; padding: 6px 6px 0; }
+
+  .tablewrap { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 1px 3px rgba(28,28,46,.08); overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th {
+    text-align: right; padding: 8px 10px; color: var(--gray); font-size: 11.5px;
+    text-transform: uppercase; letter-spacing: .5px; border-bottom: 2px solid var(--track);
+    cursor: pointer; user-select: none; white-space: nowrap;
+  }
+  th:first-child, td:first-child { text-align: left; }
+  td { padding: 7px 10px; text-align: right; border-bottom: 1px solid var(--bg-gray); white-space: nowrap; }
+  td:first-child { font-weight: 600; }
+  .tnote { font-size: 12px; color: var(--gray); font-style: italic; margin-top: 10px; }
+  footer { text-align: center; font-size: 12px; color: var(--gray); padding-bottom: 40px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand">Stash + Lode</div>
+    <h1>Location CPL Heat Map</h1>
+    <div class="asof">Cost per conversion by advertising location</div>
+  </div>
+  <nav>
+    <a href="index.html">KPI Dashboard</a>
+    <a href="capability.html">Safety, Capability &amp; HR</a>
+    <a href="conversion.html">Conversion Rate</a>
+    <a href="cpl.html" class="active">Location CPL</a>
+  </nav>
+</header>
+<main>
+  <div class="summary" id="summary"></div>
+
+  <section>
+    <h2>Heat map — cost per conversion</h2>
+    <div class="mapwrap">
+      <div id="map"></div>
+      <div class="legend">
+        <span><span class="sw" style="background:#1D7A4A"></span>Low CPL (best) &lt; $55</span>
+        <span><span class="sw" style="background:#84B75B"></span>$55–70</span>
+        <span><span class="sw" style="background:#E8B322"></span>$70–85</span>
+        <span><span class="sw" style="background:#E87722"></span>$85–100</span>
+        <span><span class="sw" style="background:#DC2626"></span>High CPL &gt; $100</span>
+        <span><span class="sw" style="background:#94A3B8"></span>No conversions</span>
+        <span>Bubble size = clicks</span>
+      </div>
+      <div class="mapnote">Marker positions are approximate suburb centres. Click a bubble for full metrics.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Location data</h2>
+    <div class="tablewrap">
+      <table id="tbl">
+        <thead><tr>
+          <th data-k="loc">Location</th>
+          <th data-k="imp">Impressions</th>
+          <th data-k="clk">Clicks</th>
+          <th data-k="cr">Conv. rate</th>
+          <th data-k="conv">Conversions</th>
+          <th data-k="cpl">Cost / conv.</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+      <div class="tnote">Cells shaded green (strong) → red (weak) within each column. Click a column header to sort. Locations with zero conversions show CPL as “—”.</div>
+    </div>
+  </section>
+</main>
+<footer>Stash + Lode — Location CPL Report</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const DATA = [
+  { loc: "Maroochy River, Yandina", lat: -26.561, lng: 152.955, imp: 20354, clk: 598, cr: 8.87, conv: 53.5, cpl: 91.32 },
+  { loc: "Gympie", lat: -26.190, lng: 152.665, imp: 8106, clk: 525, cr: 8.40, conv: 45, cpl: 97.10 },
+  { loc: "Nambour", lat: -26.626, lng: 152.959, imp: 5067, clk: 383, cr: 12.85, conv: 50, cpl: 67.73 },
+  { loc: "Maroochydore", lat: -26.655, lng: 153.090, imp: 10731, clk: 334, cr: 10.16, conv: 35.17, cpl: 72.11 },
+  { loc: "Kawana Waters", lat: -26.720, lng: 153.120, imp: 9175, clk: 298, cr: 10.00, conv: 31, cpl: 79.52 },
+  { loc: "Cooroy", lat: -26.417, lng: 152.911, imp: 7873, clk: 268, cr: 14.87, conv: 39.99, cpl: 50.61 },
+  { loc: "Coolum Beach", lat: -26.528, lng: 153.087, imp: 9212, clk: 270, cr: 10.97, conv: 30.5, cpl: 65.08 },
+  { loc: "Mooloolaba, Mountain Creek", lat: -26.690, lng: 153.105, imp: 7295, clk: 236, cr: 10.21, conv: 24.5, cpl: 71.02 },
+  { loc: "Buderim", lat: -26.684, lng: 153.057, imp: 3176, clk: 225, cr: 7.58, conv: 17.66, cpl: 98.27 },
+  { loc: "Tewantin, Cooroibah", lat: -26.390, lng: 153.028, imp: 3136, clk: 200, cr: 12.75, conv: 26, cpl: 57.58 },
+  { loc: "Noosa, Sunshine Beach", lat: -26.398, lng: 153.090, imp: 5973, clk: 214, cr: 8.14, conv: 17.67, cpl: 81.17 },
+  { loc: "Marcoola, Mudjimba", lat: -26.585, lng: 153.093, imp: 5404, clk: 172, cr: 7.34, conv: 13, cpl: 104.58 },
+  { loc: "Eumundi, Doonan", lat: -26.470, lng: 152.972, imp: 2239, clk: 118, cr: 14.63, conv: 18, cpl: 51.30 },
+  { loc: "Noosaville", lat: -26.399, lng: 153.062, imp: 2135, clk: 101, cr: 10.81, conv: 12, cpl: 65.37 },
+  { loc: "Valdora, Ninderry", lat: -26.552, lng: 152.995, imp: 1481, clk: 86, cr: 14.77, conv: 13, cpl: 57.53 },
+  { loc: "Pomona", lat: -26.366, lng: 152.856, imp: 2428, clk: 81, cr: 16.87, conv: 14, cpl: 45.83 },
+  { loc: "Palmview, Glenview", lat: -26.752, lng: 153.052, imp: 993, clk: 61, cr: 14.29, conv: 9, cpl: 60.62 },
+  { loc: "Bribie, Banksia Beach", lat: -27.060, lng: 153.148, imp: 382, clk: 25, cr: 30.77, conv: 8, cpl: 21.35 },
+  { loc: "Rainbow Beach", lat: -25.903, lng: 153.091, imp: 271, clk: 21, cr: 19.05, conv: 4, cpl: 39.87 },
+  { loc: "Delaneys Creek", lat: -26.952, lng: 152.792, imp: 172, clk: 9, cr: 16.67, conv: 2, cpl: 56.37 },
+  { loc: "Maleny", lat: -26.760, lng: 152.849, imp: 203, clk: 12, cr: 14.29, conv: 2, cpl: 45.92 },
+  { loc: "Woombye", lat: -26.660, lng: 152.968, imp: 116, clk: 10, cr: 6.06, conv: 0.67, cpl: 120.94 },
+  { loc: "Palmwoods, Hunchy", lat: -26.685, lng: 152.960, imp: 240, clk: 14, cr: 6.67, conv: 1, cpl: 73.07 },
+  { loc: "Beerwah", lat: -26.858, lng: 152.961, imp: 229, clk: 9, cr: 0, conv: 0, cpl: null },
+  { loc: "Eudlo", lat: -26.729, lng: 152.951, imp: 23, clk: 2, cr: 50.00, conv: 1, cpl: 57.27 },
+  { loc: "Landsborough", lat: -26.809, lng: 152.964, imp: 92, clk: 8, cr: 12.50, conv: 1, cpl: 43.93 },
+  { loc: "Glasshouse Mountains", lat: -26.897, lng: 152.954, imp: 140, clk: 8, cr: 12.50, conv: 1, cpl: 35.12 },
+  { loc: "Kenilworth", lat: -26.596, lng: 152.729, imp: 27, clk: 1, cr: 0, conv: 0, cpl: null },
+  { loc: "Cooloola Cove, Tin Can Bay", lat: -25.983, lng: 152.990, imp: 24, clk: 1, cr: 0, conv: 0, cpl: null },
+  { loc: "Cooran", lat: -26.339, lng: 152.822, imp: 38, clk: 1, cr: 0, conv: 0, cpl: null },
+  { loc: "Kilcoy", lat: -26.942, lng: 152.565, imp: 4, clk: 0, cr: 0, conv: 0, cpl: null },
+  { loc: "Kin Kin", lat: -26.266, lng: 152.872, imp: 16, clk: 0, cr: 0, conv: 0, cpl: null },
+  { loc: "Morayfield", lat: -27.113, lng: 152.949, imp: 1, clk: 0, cr: 0, conv: 0, cpl: null },
+  { loc: "Elimbah", lat: -27.017, lng: 152.946, imp: 8, clk: 0, cr: 0, conv: 0, cpl: null }
+];
+
+// ---- Summary tiles ----
+const totImp = DATA.reduce((a, d) => a + d.imp, 0);
+const totClk = DATA.reduce((a, d) => a + d.clk, 0);
+const totConv = DATA.reduce((a, d) => a + d.conv, 0);
+const totCost = DATA.reduce((a, d) => a + (d.cpl ? d.cpl * d.conv : 0), 0);
+const withConv = DATA.filter(d => d.cpl);
+const best = withConv.reduce((a, b) => a.cpl < b.cpl ? a : b);
+document.getElementById("summary").innerHTML = `
+  <div class="stat"><div class="num">${totImp.toLocaleString()}</div><div class="lbl">Impressions</div></div>
+  <div class="stat"><div class="num">${totClk.toLocaleString()}</div><div class="lbl">Clicks</div></div>
+  <div class="stat"><div class="num">${totConv.toFixed(0)}</div><div class="lbl">Conversions</div></div>
+  <div class="stat"><div class="num">$${(totCost / totConv).toFixed(2)}</div><div class="lbl">Blended cost / conv.</div></div>
+  <div class="stat"><div class="num" style="font-size:18px;line-height:1.9">${best.loc}</div><div class="lbl">Best CPL — $${best.cpl.toFixed(2)}</div></div>`;
+
+// ---- Colour scale (CPL: low = good/green) ----
+function cplColor(cpl) {
+  if (cpl === null) return "#94A3B8";
+  if (cpl < 55) return "#1D7A4A";
+  if (cpl < 70) return "#84B75B";
+  if (cpl < 85) return "#E8B322";
+  if (cpl < 100) return "#E87722";
+  return "#DC2626";
+}
+
+// ---- Map ----
+const map = L.map("map").setView([-26.55, 152.95], 9);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  maxZoom: 18
+}).addTo(map);
+
+DATA.forEach(d => {
+  const r = 6 + Math.sqrt(d.clk) * 1.15; // bubble size by clicks
+  const c = L.circleMarker([d.lat, d.lng], {
+    radius: r,
+    color: "#1C1C2E",
+    weight: 1,
+    fillColor: cplColor(d.cpl),
+    fillOpacity: 0.78
+  }).addTo(map);
+  c.bindPopup(`<strong>${d.loc}</strong><br>
+    Impressions: ${d.imp.toLocaleString()}<br>
+    Clicks: ${d.clk.toLocaleString()}<br>
+    Conversion rate: ${d.cr.toFixed(2)}%<br>
+    Conversions: ${d.conv}<br>
+    Cost / conv.: ${d.cpl === null ? "—" : "$" + d.cpl.toFixed(2)}`);
+  c.bindTooltip(`${d.loc} — ${d.cpl === null ? "no conversions" : "$" + d.cpl.toFixed(2)}`);
+});
+
+// ---- Heat table ----
+function shade(frac, invert) {
+  // frac 0..1 where 1 = "good"; invert handled by caller
+  const f = Math.max(0, Math.min(1, frac));
+  // interpolate red (220,38,38) -> amber (232,179,34) -> green (29,122,74), light backgrounds
+  let rC, gC, bC;
+  if (f < 0.5) { const t = f / 0.5; rC = 220 + (232 - 220) * t; gC = 38 + (179 - 38) * t; bC = 38 + (34 - 38) * t; }
+  else { const t = (f - 0.5) / 0.5; rC = 232 + (29 - 232) * t; gC = 179 + (122 - 179) * t; bC = 34 + (74 - 34) * t; }
+  return `rgba(${rC | 0},${gC | 0},${bC | 0},0.22)`;
+}
+
+const maxImp = Math.max(...DATA.map(d => d.imp));
+const maxClk = Math.max(...DATA.map(d => d.clk));
+const maxCr = Math.max(...DATA.map(d => d.cr));
+const maxConv = Math.max(...DATA.map(d => d.conv));
+const cplVals = withConv.map(d => d.cpl);
+const minCpl = Math.min(...cplVals), maxCpl = Math.max(...cplVals);
+
+let sortKey = "clk", sortDir = -1;
+function render() {
+  const rows = [...DATA].sort((a, b) => {
+    let va = a[sortKey], vb = b[sortKey];
+    if (sortKey === "loc") return sortDir * a.loc.localeCompare(b.loc);
+    if (va === null) va = sortDir === 1 ? Infinity : -Infinity;
+    if (vb === null) vb = sortDir === 1 ? Infinity : -Infinity;
+    return sortDir * (va - vb);
+  });
+  document.querySelector("#tbl tbody").innerHTML = rows.map(d => `
+    <tr>
+      <td>${d.loc}</td>
+      <td style="background:${shade(Math.sqrt(d.imp / maxImp))}">${d.imp.toLocaleString()}</td>
+      <td style="background:${shade(Math.sqrt(d.clk / maxClk))}">${d.clk.toLocaleString()}</td>
+      <td style="background:${shade(d.cr / maxCr)}">${d.cr.toFixed(2)}%</td>
+      <td style="background:${shade(Math.sqrt(d.conv / maxConv))}">${d.conv}</td>
+      <td style="background:${d.cpl === null ? "rgba(148,163,184,.18)" : shade(1 - (d.cpl - minCpl) / (maxCpl - minCpl))}">${d.cpl === null ? "—" : "$" + d.cpl.toFixed(2)}</td>
+    </tr>`).join("");
+}
+document.querySelectorAll("#tbl th").forEach(th => th.addEventListener("click", () => {
+  const k = th.dataset.k;
+  if (sortKey === k) sortDir *= -1; else { sortKey = k; sortDir = k === "loc" ? 1 : -1; }
+  render();
+}));
+render();
+</script>
+</body>
+</html>

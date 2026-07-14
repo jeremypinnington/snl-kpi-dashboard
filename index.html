@@ -239,11 +239,14 @@ document.getElementById("plabel").textContent =
 function occChart() {
   // [date, avg MSU occupancy %] — monthly averages Jul 2025–Mar 2026, weekly (w/e Wed) from Apr 2026
   const monthly = [["2025-07-15",77],["2025-08-15",89],["2025-09-15",101],["2025-10-15",98],["2025-11-15",92],["2025-12-15",95],["2026-01-15",105],["2026-02-15",103],["2026-03-15",108]];
-  const weekly = [["2026-04-01",107],["2026-04-08",106],["2026-04-15",97],["2026-04-22",90],["2026-04-29",90],["2026-05-06",93],["2026-05-13",96],["2026-05-20",98],["2026-05-27",100],["2026-06-03",104],["2026-06-10",78],["2026-06-17",81],["2026-06-24",81]];
-  const postFY = [["2026-06-24",81],["2026-07-01",80],["2026-07-08",81],["2026-07-15",80]]; // beyond 30 Jun, shows continued stability
-  const deliveries = [["2026-04-08","+32"],["2026-06-03","+32"],["2026-06-10","+32"],["2026-06-17","+32"]];
+  const weekly = [["2026-04-01",107],["2026-04-08",106],["2026-04-15",97],["2026-04-22",90],["2026-04-29",90],["2026-05-06",93],["2026-05-13",96],["2026-05-20",98],["2026-05-27",100],["2026-06-03",104],["2026-06-10",78],["2026-06-17",81],["2026-06-24",81],["2026-07-01",80],["2026-07-08",81],["2026-07-15",80]];
+  // Projection to 31 Dec 26 — unit-based model on ~473-unit fleet (505 after 26 Aug delivery):
+  // winter tail ~+2 units/wk, spring absorption ~+6/wk (vs ~+9/wk seen after the Apr batch;
+  // FY25 seasonal lift Jul→Sep was +24 pts), tapering ~+4/wk in Dec. Mirrors last year's 95% Dec peak.
+  const proj = [["2026-07-15",80],["2026-07-22",80.3],["2026-07-29",80.7],["2026-08-05",81.1],["2026-08-12",81.6],["2026-08-19",82.0],["2026-08-26",77.2],["2026-09-02",78.4],["2026-09-09",79.6],["2026-09-16",80.8],["2026-09-23",82.0],["2026-09-30",83.2],["2026-10-07",84.4],["2026-10-14",85.5],["2026-10-21",86.7],["2026-10-28",87.9],["2026-11-04",88.9],["2026-11-11",89.9],["2026-11-18",90.9],["2026-11-25",91.9],["2026-12-02",92.7],["2026-12-09",93.5],["2026-12-16",94.3],["2026-12-23",94.9],["2026-12-30",95.4]];
+  const deliveries = [["2026-04-08","+32"],["2026-06-03","+32"],["2026-06-10","+32"],["2026-06-17","+32"],["2026-08-26","+32"]];
 
-  const t0 = Date.parse("2025-07-01"), t1 = Date.parse("2026-07-18");
+  const t0 = Date.parse("2025-07-01"), t1 = Date.parse("2027-01-03");
   const W = 1000, H = 330, L = 46, R = 12, T = 26, B = 42;
   const x = d => L + (Date.parse(d) - t0) / (t1 - t0) * (W - L - R);
   const y = v => T + (115 - v) / (115 - 58) * (H - T - B);
@@ -257,8 +260,8 @@ function occChart() {
           <text x="${L-8}" y="${y(v)+4}" font-size="11" fill="#4A5568" text-anchor="end">${v}%</text>`;
   }
   // x month labels
-  const months = ["2025-07-01","2025-08-01","2025-09-01","2025-10-01","2025-11-01","2025-12-01","2026-01-01","2026-02-01","2026-03-01","2026-04-01","2026-05-01","2026-06-01","2026-07-01"];
-  const mNames = ["Jul","Aug","Sep","Oct","Nov","Dec","Jan 26","Feb","Mar","Apr","May","Jun","Jul"];
+  const months = ["2025-07-01","2025-08-01","2025-09-01","2025-10-01","2025-11-01","2025-12-01","2026-01-01","2026-02-01","2026-03-01","2026-04-01","2026-05-01","2026-06-01","2026-07-01","2026-08-01","2026-09-01","2026-10-01","2026-11-01","2026-12-01"];
+  const mNames = ["Jul","Aug","Sep","Oct","Nov","Dec","Jan 26","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   months.forEach((m, i) => {
     s += `<line x1="${x(m)}" y1="${T}" x2="${x(m)}" y2="${H-B}" stroke="#F1F5F9" stroke-width="1"/>
           <text x="${x(m)}" y="${H-B+16}" font-size="11" fill="#4A5568" text-anchor="middle">${mNames[i]}</text>`;
@@ -274,17 +277,20 @@ function occChart() {
     s += `<line x1="${x(d[0])}" y1="${y(58)}" x2="${x(d[0])}" y2="${T+14}" stroke="#E87722" stroke-width="1.6" stroke-dasharray="4 3"/>
           <text x="${x(d[0])}" y="${H-B-4}" font-size="10" font-weight="700" fill="#E87722" text-anchor="middle">▲</text>`;
   });
-  s += `<text x="${x("2026-04-08")}" y="${T+10}" font-size="11" font-weight="700" fill="#E87722" text-anchor="middle">Batch 1: +32 MSUs (8 Apr)</text>
-        <text x="${x("2026-06-10")}" y="${T+24}" font-size="11" font-weight="700" fill="#E87722" text-anchor="middle">Batch 2: +96 (3–17 Jun)</text>`;
-  // occupancy lines
+  s += `<text x="${x("2026-04-08")}" y="${T+10}" font-size="11" font-weight="700" fill="#E87722" text-anchor="middle">Batch 1: +32 (8 Apr)</text>
+        <text x="${x("2026-06-10")}" y="${T+24}" font-size="11" font-weight="700" fill="#E87722" text-anchor="middle">Batch 2: +96 (3–17 Jun)</text>
+        <text x="${x("2026-08-26")}" y="${T+10}" font-size="11" font-weight="700" fill="#E87722" text-anchor="middle">Batch 3: +32 (26 Aug)</text>`;
+  // occupancy lines — actual (solid) then projection (dashed)
   s += `<polyline points="${pts(all)}" fill="none" stroke="#0D7377" stroke-width="2.6" stroke-linejoin="round"/>`;
-  s += `<polyline points="${pts(postFY)}" fill="none" stroke="#0D7377" stroke-width="2" stroke-dasharray="4 5" opacity=".65"/>`;
+  s += `<polyline points="${pts(proj)}" fill="none" stroke="#0D7377" stroke-width="2.2" stroke-dasharray="5 5" opacity=".6" stroke-linejoin="round"/>`;
   all.forEach(p => { s += `<circle cx="${x(p[0])}" cy="${y(p[1])}" r="3" fill="#0D7377"/>`; });
-  postFY.slice(1).forEach(p => { s += `<circle cx="${x(p[0])}" cy="${y(p[1])}" r="2.6" fill="#0D7377" opacity=".65"/>`; });
+  // projected 85% crossing marker
+  s += `<circle cx="${x("2026-10-14")}" cy="${y(85.5)}" r="5.5" fill="none" stroke="#1D7A4A" stroke-width="2.4"/>
+        <text x="${x("2026-10-14")+9}" y="${y(85.5)+16}" font-size="11" font-weight="700" fill="#1D7A4A">≥85% ~14 Oct (proj.)</text>`;
   // legend
-  s += `<line x1="${L+6}" y1="${H-6}" x2="${L+30}" y2="${H-6}" stroke="#0D7377" stroke-width="2.6"/><text x="${L+36}" y="${H-2}" font-size="11" fill="#4A5568">Avg MSU occupancy (monthly to Mar, weekly from Apr)</text>
-        <line x1="${L+372}" y1="${H-6}" x2="${L+396}" y2="${H-6}" stroke="#E87722" stroke-width="1.6" stroke-dasharray="4 3"/><text x="${L+402}" y="${H-2}" font-size="11" fill="#4A5568">MSU delivery</text>
-        <line x1="${L+500}" y1="${H-6}" x2="${L+524}" y2="${H-6}" stroke="#0D7377" stroke-width="2" stroke-dasharray="4 5" opacity=".65"/><text x="${L+530}" y="${H-2}" font-size="11" fill="#4A5568">Post-FY (to 15 Jul 26)</text>`;
+  s += `<line x1="${L+6}" y1="${H-6}" x2="${L+30}" y2="${H-6}" stroke="#0D7377" stroke-width="2.6"/><text x="${L+36}" y="${H-2}" font-size="11" fill="#4A5568">Actual avg MSU occupancy (monthly to Mar, weekly from Apr)</text>
+        <line x1="${L+390}" y1="${H-6}" x2="${L+414}" y2="${H-6}" stroke="#0D7377" stroke-width="2.2" stroke-dasharray="5 5" opacity=".6"/><text x="${L+420}" y="${H-2}" font-size="11" fill="#4A5568">Projected (past uptake + seasonal trend)</text>
+        <line x1="${L+660}" y1="${H-6}" x2="${L+684}" y2="${H-6}" stroke="#E87722" stroke-width="1.6" stroke-dasharray="4 3"/><text x="${L+690}" y="${H-2}" font-size="11" fill="#4A5568">MSU delivery</text>`;
   s += `</svg>`;
   return s;
 }
@@ -297,7 +303,8 @@ function chartCard(k) {
       ${occChart()}
       <div class="chart-notes">
         <strong>Batch 1 — +32 MSUs (8 Apr, assembled 9–10 Apr):</strong> occupancy never fell below 90% and was back to 100% within 7 weeks — the 85%-in-4-months target (due 8 Aug) was never breached. <strong>Achieved.</strong><br>
-        <strong>Batch 2 — +96 MSUs (32/week, 3–17 Jun; a 44% fleet increase):</strong> occupancy troughed at 78% and stabilised at ~80–81% within two weeks of the final tranche. On current uptake it is tracking to 85% well inside the 4-month window (due mid-Oct). <strong>On track, ahead of pace.</strong>
+        <strong>Batch 2 — +96 MSUs (32/week, 3–17 Jun; a 44% fleet increase):</strong> occupancy troughed at 78% and stabilised at ~80–81% within two weeks of the final tranche — projected to cross 85% around 14 Oct, inside the 4-month window (due mid-Oct). <strong>On track.</strong><br>
+        <strong>Batch 3 — +32 MSUs (due 26 Aug):</strong> projection absorbs the dilution (~77% on delivery) and still crosses 85% by mid-October — more than 10 weeks ahead of its 26 Dec deadline, climbing to ~95% by year end. <em>Projection assumes absorption in line with past uptake (~9 units/wk after the Apr batch, ~6/wk through spring, tapering in Dec) and mirrors last year's seasonal pattern (Jul 77% → Sep 101%, Dec 95%).</em>
       </div>
     </div>`;
 }

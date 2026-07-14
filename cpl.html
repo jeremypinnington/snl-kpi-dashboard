@@ -101,9 +101,8 @@
         <span><span class="sw" style="background:#E87722"></span>$85–100</span>
         <span><span class="sw" style="background:#DC2626"></span>High CPL &gt; $100</span>
         <span><span class="sw" style="background:#94A3B8"></span>No conversions</span>
-        <span>Bubble size = clicks</span>
       </div>
-      <div class="mapnote">Marker positions are approximate suburb centres. Click a bubble for full metrics.</div>
+      <div class="mapnote">Hover or click a suburb for full metrics. Suburb boundaries © State of Queensland (Department of Resources), CC BY 4.0.</div>
     </div>
   </section>
 
@@ -196,23 +195,99 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 18
 }).addTo(map);
 
-DATA.forEach(d => {
-  const r = 6 + Math.sqrt(d.clk) * 1.15; // bubble size by clicks
-  const c = L.circleMarker([d.lat, d.lng], {
-    radius: r,
-    color: "#1C1C2E",
-    weight: 1,
-    fillColor: cplColor(d.cpl),
-    fillOpacity: 0.78
-  }).addTo(map);
-  c.bindPopup(`<strong>${d.loc}</strong><br>
+// Map each gazetted QLD locality to its row in DATA (ad locations can span several suburbs)
+const SUBURB_TO_ROW = {
+  "MAROOCHY RIVER": 0, "YANDINA": 0,
+  "GYMPIE": 1,
+  "NAMBOUR": 2,
+  "MAROOCHYDORE": 3,
+  "BUDDINA": 4, "BOKARINA": 4, "WARANA": 4, "WURTULLA": 4, "BIRTINYA": 4, "MINYAMA": 4, "PARREARRA": 4,
+  "COOROY": 5,
+  "COOLUM BEACH": 6,
+  "MOOLOOLABA": 7, "MOUNTAIN CREEK": 7,
+  "BUDERIM": 8,
+  "TEWANTIN": 9, "COOROIBAH": 9,
+  "NOOSA HEADS": 10, "SUNSHINE BEACH": 10,
+  "MARCOOLA": 11, "MUDJIMBA": 11,
+  "EUMUNDI": 12, "DOONAN": 12,
+  "NOOSAVILLE": 13,
+  "VALDORA": 14, "NINDERRY": 14,
+  "POMONA": 15,
+  "PALMVIEW": 16, "GLENVIEW": 16,
+  "BANKSIA BEACH": 17, "BONGAREE": 17, "BELLARA": 17, "WOORIM": 17,
+  "RAINBOW BEACH": 18,
+  "DELANEYS CREEK": 19,
+  "MALENY": 20,
+  "WOOMBYE": 21,
+  "PALMWOODS": 22, "HUNCHY": 22,
+  "BEERWAH": 23,
+  "EUDLO": 24,
+  "LANDSBOROUGH": 25,
+  "GLASS HOUSE MOUNTAINS": 26,
+  "KENILWORTH": 27,
+  "COOLOOLA COVE": 28, "TIN CAN BAY": 28,
+  "COORAN": 29,
+  "KILCOY": 30,
+  "KIN KIN": 31,
+  "MORAYFIELD": 32,
+  "ELIMBAH": 33
+};
+
+function popupHtml(d) {
+  return `<strong>${d.loc}</strong><br>
     Impressions: ${d.imp.toLocaleString()}<br>
     Clicks: ${d.clk.toLocaleString()}<br>
     Conversion rate: ${d.cr.toFixed(2)}%<br>
     Conversions: ${d.conv}<br>
-    Cost / conv.: ${d.cpl === null ? "—" : "$" + d.cpl.toFixed(2)}`);
-  c.bindTooltip(`${d.loc} — ${d.cpl === null ? "no conversions" : "$" + d.cpl.toFixed(2)}`);
-});
+    Cost / conv.: ${d.cpl === null ? "—" : "$" + d.cpl.toFixed(2)}`;
+}
+
+// Fallback: bubble markers (used only if the boundary service is unreachable)
+function drawBubbles() {
+  DATA.forEach(d => {
+    const r = 6 + Math.sqrt(d.clk) * 1.15;
+    const c = L.circleMarker([d.lat, d.lng], {
+      radius: r, color: "#1C1C2E", weight: 1,
+      fillColor: cplColor(d.cpl), fillOpacity: 0.78
+    }).addTo(map);
+    c.bindPopup(popupHtml(d));
+    c.bindTooltip(`${d.loc} — ${d.cpl === null ? "no conversions" : "$" + d.cpl.toFixed(2)}`);
+  });
+}
+
+// Choropleth: fetch suburb polygons from the QLD Government locality boundaries service
+const names = Object.keys(SUBURB_TO_ROW).map(n => `'${n}'`).join(",");
+const qUrl = "https://spatial-gis.information.qld.gov.au/arcgis/rest/services/PlanningCadastre/LandParcelPropertyFramework/MapServer/19/query"
+  + "?where=" + encodeURIComponent(`UPPER(locality) IN (${names})`)
+  + "&outFields=locality&f=geojson&outSR=4326&maxAllowableOffset=0.0005&geometryPrecision=4";
+
+fetch(qUrl)
+  .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+  .then(gj => {
+    if (!gj.features || !gj.features.length) throw new Error("no features");
+    L.geoJSON(gj, {
+      style: f => {
+        const row = DATA[SUBURB_TO_ROW[(f.properties.locality || "").toUpperCase()]];
+        return {
+          color: "#FFFFFF", weight: 1.4,
+          fillColor: row ? cplColor(row.cpl) : "#94A3B8",
+          fillOpacity: 0.8
+        };
+      },
+      onEachFeature: (f, layer) => {
+        const row = DATA[SUBURB_TO_ROW[(f.properties.locality || "").toUpperCase()]];
+        if (!row) return;
+        layer.bindPopup(popupHtml(row));
+        layer.bindTooltip(`${f.properties.locality} (${row.loc}) — ${row.cpl === null ? "no conversions" : "$" + row.cpl.toFixed(2)}`, { sticky: true });
+        layer.on("mouseover", () => layer.setStyle({ weight: 2.6, color: "#1C1C2E" }));
+        layer.on("mouseout", () => layer.setStyle({ weight: 1.4, color: "#FFFFFF" }));
+      }
+    }).addTo(map);
+  })
+  .catch(err => {
+    console.warn("Boundary service unavailable, falling back to bubbles:", err);
+    drawBubbles();
+  });
 
 // ---- Heat table ----
 function shade(frac, invert) {

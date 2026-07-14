@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>S+L Leadership KPIs — FY 2025/26</title>
+<title>Stash + Lode — Leadership Reporting Hub</title>
 <style>
   :root {
     --navy: #1B3A6B;
@@ -17,7 +17,6 @@
     --bg-blue: #EBF3FB;
     --bg-green: #E8F5EE;
     --bg-orange: #FEF3E8;
-    --bg-red: #FDEDED;
     --bg-gray: #F5F7FA;
     --hdr-blue: #CADCFC;
     --track: #E2E8F0;
@@ -30,74 +29,43 @@
     line-height: 1.5;
   }
   header { background: var(--navy); color: #fff; padding: 32px 24px 0; }
-  nav { max-width: 1180px; margin: 20px auto 0; display: flex; gap: 4px; }
+  .header-inner { max-width: 1180px; margin: 0 auto; }
+  .brand { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--hdr-blue); font-weight: 600; }
+  header h1 { font-size: 30px; margin-top: 6px; font-weight: 700; }
+  .asof { margin-top: 8px; font-size: 14px; color: #B0C4E8; }
+  nav { max-width: 1180px; margin: 20px auto 0; display: flex; gap: 4px; flex-wrap: wrap; }
   nav a {
     color: #B0C4E8; text-decoration: none; font-size: 14px; font-weight: 600;
     padding: 10px 18px; border-radius: 8px 8px 0 0;
   }
   nav a.active { background: var(--bg-gray); color: var(--navy); }
   nav a:not(.active):hover { background: rgba(255,255,255,.08); color: #fff; }
-  .header-inner { max-width: 1180px; margin: 0 auto; }
-  .brand { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--hdr-blue); font-weight: 600; }
-  header h1 { font-size: 28px; margin-top: 6px; font-weight: 700; }
-  .asof { margin-top: 8px; font-size: 14px; color: #B0C4E8; }
   main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 56px; }
 
-  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 12px; }
-  .stat {
-    background: #fff; border-radius: 10px; padding: 18px 16px;
-    border-top: 4px solid var(--gray);
-    box-shadow: 0 1px 3px rgba(28,28,46,.08);
+  .intro {
+    background: #fff; border-radius: 10px; padding: 24px 26px; margin-bottom: 18px;
+    box-shadow: 0 1px 3px rgba(28,28,46,.08); border-left: 5px solid var(--teal);
   }
-  .stat .num { font-size: 32px; font-weight: 800; }
-  .stat .lbl { font-size: 12.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); font-weight: 600; margin-top: 2px; }
-  .stat.green  { border-top-color: var(--green); }  .stat.green .num  { color: var(--green); }
-  .stat.orange { border-top-color: var(--orange); } .stat.orange .num { color: var(--orange); }
-  .stat.red    { border-top-color: var(--red); }    .stat.red .num    { color: var(--red); }
-  .stat.gray   { border-top-color: var(--gray); }   .stat.gray .num   { color: var(--gray); }
+  .intro h2 { color: var(--navy); font-size: 19px; margin-bottom: 8px; }
+  .intro p { font-size: 14.5px; color: var(--gray); max-width: 900px; }
 
-  .progress-wrap { background:#fff; border-radius:10px; padding:18px 20px; box-shadow:0 1px 3px rgba(28,28,46,.08); margin-bottom:32px; }
-  .progress-wrap .plabel { font-size:13px; font-weight:600; color:var(--gray); margin-bottom:10px; }
-  .bar { display:flex; height:14px; border-radius:7px; overflow:hidden; }
-  .bar div { height:100%; }
+  .headline { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin: 22px 0 30px; }
+  .hstat { background: #fff; border-radius: 10px; padding: 16px; border-top: 4px solid var(--green); box-shadow: 0 1px 3px rgba(28,28,46,.08); }
+  .hstat .num { font-size: 26px; font-weight: 800; color: var(--green); }
+  .hstat .lbl { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); font-weight: 600; margin-top: 2px; }
 
-  section { margin-bottom: 34px; }
-  h2 {
-    font-size: 17px; color: var(--navy); text-transform: uppercase; letter-spacing: 1.5px;
-    border-bottom: 3px solid var(--teal); padding-bottom: 8px; margin-bottom: 16px;
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 16px; }
+  a.tile {
+    background: #fff; border-radius: 10px; padding: 22px 24px;
+    box-shadow: 0 1px 3px rgba(28,28,46,.08); border-top: 5px solid var(--teal);
+    text-decoration: none; color: var(--dark); display: flex; flex-direction: column; gap: 10px;
+    transition: transform .12s ease, box-shadow .12s ease;
   }
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; }
-  .card {
-    background: #fff; border-radius: 10px; padding: 18px 18px 16px;
-    box-shadow: 0 1px 3px rgba(28,28,46,.08);
-    border-top: 4px solid var(--gray);
-    display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
-  }
-  .card.wide { grid-column: 1 / -1; align-items: stretch; text-align: left; }
-  .card.wide .kpi-title { min-height: 0; justify-content: flex-start; text-align: left; }
-  .chart-notes { font-size: 12.5px; color: var(--gray); }
-  .chart-notes strong { color: var(--dark); }
-  .card.green  { border-top-color: var(--green); }
-  .card.orange { border-top-color: var(--orange); }
-  .card.red    { border-top-color: var(--red); }
-  .card.gray   { border-top-color: var(--gray); }
-  .kpi-title { font-weight: 700; font-size: 14.5px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
-  .gauge { width: 190px; }
-  .gauge-value { font-size: 26px; font-weight: 800; margin-top: -4px; }
-  .gauge-value.green  { color: var(--green); }
-  .gauge-value.orange { color: var(--orange); }
-  .gauge-value.red    { color: var(--red); }
-  .gauge-value.gray   { color: var(--gray); }
-  .gauge-target { font-size: 12px; color: var(--gray); font-weight: 600; }
-  .pill {
-    font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .8px; padding: 3px 10px; border-radius: 20px; margin-top: 2px;
-  }
-  .pill.green  { background: var(--bg-green);  color: var(--green); }
-  .pill.orange { background: var(--bg-orange); color: var(--orange); }
-  .pill.red    { background: var(--bg-red);    color: var(--red); }
-  .pill.gray   { background: var(--bg-gray);   color: var(--gray); border: 1px solid var(--track); }
-  .prog { font-size: 12.5px; color: var(--gray); margin-top: 4px; }
+  a.tile:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(28,28,46,.14); }
+  .tile h3 { color: var(--navy); font-size: 17px; }
+  .tile .tag { align-self: flex-start; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; padding: 3px 10px; border-radius: 20px; background: var(--bg-green); color: var(--green); }
+  .tile p { font-size: 13.5px; color: var(--gray); }
+  .tile .go { margin-top: auto; font-size: 13px; font-weight: 700; color: var(--teal); }
   footer { text-align: center; font-size: 12px; color: var(--gray); padding-bottom: 40px; }
 </style>
 </head>
@@ -105,225 +73,58 @@
 <header>
   <div class="header-inner">
     <div class="brand">Stash + Lode</div>
-    <h1>Leadership Team KPIs — FY 2025/26</h1>
-    <div class="asof">Progress as at June 2026</div>
+    <h1>Leadership Reporting Hub — FY 2025/26</h1>
+    <div class="asof">KPIs, benchmarks and performance analysis · updated July 2026</div>
   </div>
   <nav>
-    <a href="index.html" class="active">KPI Dashboard</a>
+    <a href="index.html" class="active">Home</a>
+    <a href="kpi.html">KPI Dashboard</a>
     <a href="capability.html">Safety, Capability &amp; HR</a>
     <a href="conversion.html">Conversion Rate</a>
     <a href="cpl.html">Location CPL</a>
   </nav>
 </header>
 <main>
-  <div class="summary" id="summary"></div>
-  <div class="progress-wrap">
-    <div class="plabel" id="plabel"></div>
-    <div class="bar" id="bar"></div>
+  <div class="intro">
+    <h2>Welcome</h2>
+    <p>This site brings together Stash + Lode's leadership reporting for FY 2025/26 — the full KPI scorecard, safety and people metrics benchmarked against comparable Australian businesses, an honest look at storage conversion, and where our advertising dollars work hardest. It was a year of substantial growth: the MSU fleet expanded by 160 units (+46%) while occupancy, safety and retention all held at or near record levels. Use the tabs above or the cards below to explore each area.</p>
   </div>
-  <div id="sections"></div>
+
+  <div class="headline">
+    <div class="hstat"><div class="num">+160</div><div class="lbl">MSUs added to fleet</div></div>
+    <div class="hstat"><div class="num">94.9%</div><div class="lbl">Avg MSU occupancy FY25/26</div></div>
+    <div class="hstat"><div class="num">100%</div><div class="lbl">Office &amp; driver retention</div></div>
+    <div class="hstat"><div class="num">0</div><div class="lbl">Reportable safety incidents</div></div>
+    <div class="hstat"><div class="num">22</div><div class="lbl">B2B partnerships (target 20)</div></div>
+  </div>
+
+  <div class="tiles">
+    <a class="tile" href="kpi.html">
+      <h3>KPI Dashboard</h3>
+      <span class="tag">8 of 19 completed</span>
+      <p>The full leadership scorecard on dial gauges. Standouts: fleet utilisation 80.3% (target 75%), damage incident rate just 0.5% (target ≤3%), MSU readiness 100%, and annual occupancy of 94.9% against an 85% target — plus a line chart showing new MSU deliveries being absorbed far faster than the 4-month KPI allows.</p>
+      <span class="go">View the scorecard →</span>
+    </a>
+    <a class="tile" href="capability.html">
+      <h3>Safety, Capability &amp; HR</h3>
+      <span class="tag">Ahead of industry</span>
+      <p>In one of Australia's highest-risk sectors, S+L recorded zero reportable incidents, a single LTI and one workers comp claim — well below sector norms. Office and driver retention both sit at 100% against a ~84% national average, and every contracted crew member received an engagement and salary review. Proposed as KPI additions for FY 26/27.</p>
+      <span class="go">See the benchmarks →</span>
+    </a>
+    <a class="tile" href="conversion.html">
+      <h3>Conversion Rate</h3>
+      <span class="tag">Brand momentum building</span>
+      <p>A transparent breakdown of STO conversion: what's working — rising brand awareness from social ads and units around the region, better-informed callers, and a tight marketing feedback loop — alongside a category-by-category view of where the other ~80% of enquiries go and the transport and pricing levers being tested (including the proposed Landsborough depot).</p>
+      <span class="go">Read the analysis →</span>
+    </a>
+    <a class="tile" href="cpl.html">
+      <h3>Location CPL</h3>
+      <span class="tag">$72 blended cost / conv.</span>
+      <p>An interactive suburb-by-suburb heat map of advertising cost per conversion across 34 Sunshine Coast and surrounding locations. Coastal and hinterland heartland suburbs convert cheaply — Bribie leads at $21.35, with Pomona, Cooroy and Eumundi all under $52 — pinpointing exactly where ad spend works hardest.</p>
+      <span class="go">Explore the map →</span>
+    </a>
+  </div>
 </main>
-<footer>Stash + Lode — Leadership KPI Dashboard · FY 2025/26 · Updated June 2026</footer>
-<script>
-const STATUS = {
-  green:  "Completed",
-  orange: "Partially completed",
-  red:    "Not completed",
-  gray:   "Pending result"
-};
-
-/*
- Each KPI:
- - value/target/unit → numeric gauge (needle = % of target attained, capped at 100%)
- - invert:true → "lower is better" (target is a ceiling); attainment is 100% when value ≤ target
- - no value → qualitative gauge: needle by status (completed 100%, partial 50%, not 12%, pending 0)
- - display → override for the big centre figure
-*/
-const DATA = [
-  { section: "Operations", kpis: [
-    { kpi: "≥ 75% fleet utilisation", status: "green", value: 80.3, target: 75, unit: "%", tlabel: "Target ≥ 75%", progress: "FY 25/26 utilisation is 80.3%" },
-    { kpi: "≥ 95% on-time departure (first job)", status: "red", value: 81.03, target: 95, unit: "%", tlabel: "Target ≥ 95%", progress: "OTD for FY25/26 is 81.03%" },
-    { kpi: "≤ 3% damage incident rate", status: "green", value: 0.5, target: 3, unit: "%", invert: true, tlabel: "Target ≤ 3%", progress: "Damage incident rate for FY25/26 is 0.5%" },
-    { kpi: "≥ 90% damage claims resolved <14 days", status: "red", value: 80, target: 90, unit: "%", tlabel: "Target ≥ 90%", progress: "80% of damage claims resolved within 14 days in FY25/26" },
-    { kpi: "≥ 97% MSU readiness ratio", status: "green", value: 100, target: 97, unit: "%", tlabel: "Target ≥ 97%", progress: "FY 25/26 MSU readiness is 100%" }
-  ]},
-  { section: "People & Training", kpis: [
-    { kpi: "Video-based training for removalists & MSU packers", status: "red", progress: "No suitable downtime was available to begin filming in FY25/26" },
-    { kpi: "Secure all yards with centralised access control", status: "orange", progress: "CCTV upgrade complete (May 2026) — 10 cameras installed. Access control system decision pending." },
-    { kpi: "Maintain ≥ 3 fully trained MSU logistics operators", status: "green", value: 4, target: 3, unit: "", tlabel: "Target ≥ 3", progress: "Total current fully trained MSU operators: 4" }
-  ]},
-  { section: "Storage Performance", kpis: [
-    { kpi: "Average STO conversion ≥ 30%", status: "red", value: 19.25, target: 30, unit: "%", tlabel: "Target ≥ 30%", progress: "Average STO conversion in FY 25/26 is 19.25%" },
-    { kpi: "MSU occupancy ≥ 85% within 4 months of each new MSU delivery", status: "green", chart: true, progress: "" },
-    { kpi: "MSU occupancy ≥ 85% avg per year", status: "green", value: 94.9, target: 85, unit: "%", tlabel: "Target ≥ 85%", progress: "FY 25/26 average MSU occupancy is 94.9%" },
-    { kpi: "MSUs sold per week: 7.5 per depot", status: "green", value: 12.3, target: 7.5, unit: "", tlabel: "Target ≥ 7.5/wk", progress: "June avg weekly MSU sales: ~12.3 (53 move-ins / 4.3 weeks)" },
-    { kpi: "2.5 MSU labour jobs per week", status: "red", value: 1.875, target: 2.5, unit: "", tlabel: "Target ≥ 2.5/wk", progress: "Average MSU labour jobs per week in FY25/26 is 1.875" }
-  ]},
-  { section: "Sales & Business Development", kpis: [
-    { kpi: "Convert 20 companies from B2B list to partners", status: "green", value: 22, target: 20, unit: "", tlabel: "Target ≥ 20", progress: "22 business partnerships confirmed (maintained from May)" },
-    { kpi: "Create B2B metrics document", status: "green", progress: "Document created" }
-  ]},
-  { section: "Technology & Systems", kpis: [
-    { kpi: "Integrate systems into single pane of glass (SPOG)", status: "orange", value: 95, target: 100, unit: "%", tlabel: "Completion", progress: "Project SPOG Phase 1 is still under process" },
-    { kpi: "Further automate Sophiie AI assistant", status: "orange", progress: "TBC upon completion of SPOG Phase 1" },
-    { kpi: "Website upgrade", status: "red", progress: "TBC upon completion of SPOG Phase 1" },
-    { kpi: "Incorporate access control into single platform", status: "red", progress: "Awaiting decision on access control system" }
-  ]}
-];
-
-const COLORS = { green: "#1D7A4A", orange: "#E87722", red: "#DC2626", gray: "#4A5568" };
-const QUAL_FRAC = { green: 1, orange: 0.5, red: 0.12, gray: 0 };
-const QUAL_LABEL = { green: "Done", orange: "In progress", red: "Not done", gray: "TBC" };
-
-function attainment(k) {
-  if (k.value === undefined) return QUAL_FRAC[k.status];
-  if (k.invert) return k.value <= k.target ? 1 : Math.max(0, Math.min(1, k.target / k.value));
-  return Math.max(0, Math.min(1, k.value / k.target));
-}
-
-// Semicircular gauge: track + coloured arc + needle + tick marks
-function gauge(k) {
-  const f = attainment(k);
-  const color = COLORS[k.status];
-  const cx = 100, cy = 95, r = 72;
-  const circ = Math.PI * r; // semicircle length
-
-  // needle angle: 180deg (left) -> 0deg (right)
-  const ang = Math.PI * (1 - f);
-  const nx = cx + Math.cos(ang) * (r - 14);
-  const ny = cy - Math.sin(ang) * (r - 14);
-
-  // tick marks every 25%
-  let ticks = "";
-  for (let i = 0; i <= 4; i++) {
-    const ta = Math.PI * (1 - i / 4);
-    const x1 = cx + Math.cos(ta) * (r + 4), y1 = cy - Math.sin(ta) * (r + 4);
-    const x2 = cx + Math.cos(ta) * (r + 10), y2 = cy - Math.sin(ta) * (r + 10);
-    ticks += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#CBD5E0" stroke-width="2"/>`;
-  }
-
-  return `
-  <svg class="gauge" viewBox="0 0 200 112" xmlns="http://www.w3.org/2000/svg">
-    ${ticks}
-    <path d="M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}" fill="none" stroke="var(--track)" stroke-width="14" stroke-linecap="round"/>
-    <path d="M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}" fill="none" stroke="${color}" stroke-width="14" stroke-linecap="round"
-      stroke-dasharray="${(f * circ).toFixed(1)} ${circ.toFixed(1)}"/>
-    <line x1="${cx}" y1="${cy}" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="#1C1C2E" stroke-width="3.5" stroke-linecap="round"/>
-    <circle cx="${cx}" cy="${cy}" r="6" fill="#1C1C2E"/>
-    <text x="${cx - r}" y="${cy + 14}" font-size="10" fill="#4A5568" text-anchor="middle">0%</text>
-    <text x="${cx + r}" y="${cy + 14}" font-size="10" fill="#4A5568" text-anchor="middle">100%</text>
-  </svg>`;
-}
-
-function centreValue(k) {
-  if (k.display) return k.display;
-  if (k.value !== undefined) return k.value + (k.unit || "");
-  return QUAL_LABEL[k.status];
-}
-
-const counts = { green: 0, orange: 0, red: 0, gray: 0 };
-DATA.forEach(s => s.kpis.forEach(k => counts[k.status]++));
-const total = Object.values(counts).reduce((a, b) => a + b, 0);
-
-document.getElementById("summary").innerHTML = ["green","orange","red","gray"].map(c =>
-  `<div class="stat ${c}"><div class="num">${counts[c]}</div><div class="lbl">${STATUS[c]}</div></div>`
-).join("");
-
-document.getElementById("bar").innerHTML = ["green","orange","red","gray"].map(c =>
-  `<div style="width:${(counts[c]/total*100).toFixed(1)}%;background:${COLORS[c]}"></div>`
-).join("");
-document.getElementById("plabel").textContent =
-  `${counts.green} of ${total} KPIs completed (${Math.round(counts.green/total*100)}%)`;
-
-// ---- Occupancy uptake line chart (MSU occupancy vs new-unit deliveries, FY25/26) ----
-function occChart() {
-  // [date, avg MSU occupancy %] — monthly averages Jul 2025–Mar 2026, weekly (w/e Wed) from Apr 2026
-  const monthly = [["2025-07-15",77],["2025-08-15",89],["2025-09-15",101],["2025-10-15",98],["2025-11-15",92],["2025-12-15",95],["2026-01-15",105],["2026-02-15",103],["2026-03-15",108]];
-  const weekly = [["2026-04-01",107],["2026-04-08",106],["2026-04-15",97],["2026-04-22",90],["2026-04-29",90],["2026-05-06",93],["2026-05-13",96],["2026-05-20",98],["2026-05-27",100],["2026-06-03",104],["2026-06-10",78],["2026-06-17",81],["2026-06-24",81],["2026-07-01",80],["2026-07-08",81],["2026-07-15",80]];
-  // Projection to 31 Dec 26 — unit-based model on ~473-unit fleet (505 after 26 Aug delivery):
-  // winter tail ~+2 units/wk, spring absorption ~+6/wk (vs ~+9/wk seen after the Apr batch;
-  // FY25 seasonal lift Jul→Sep was +24 pts), tapering ~+4/wk in Dec. Mirrors last year's 95% Dec peak.
-  const proj = [["2026-07-15",80],["2026-07-22",80.3],["2026-07-29",80.7],["2026-08-05",81.1],["2026-08-12",81.6],["2026-08-19",82.0],["2026-08-26",77.2],["2026-09-02",78.4],["2026-09-09",79.6],["2026-09-16",80.8],["2026-09-23",82.0],["2026-09-30",83.2],["2026-10-07",84.4],["2026-10-14",85.5],["2026-10-21",86.7],["2026-10-28",87.9],["2026-11-04",88.9],["2026-11-11",89.9],["2026-11-18",90.9],["2026-11-25",91.9],["2026-12-02",92.7],["2026-12-09",93.5],["2026-12-16",94.3],["2026-12-23",94.9],["2026-12-30",95.4]];
-  const deliveries = [["2026-04-08","+32"],["2026-06-03","+32"],["2026-06-10","+32"],["2026-06-17","+32"],["2026-08-26","+32"]];
-
-  const t0 = Date.parse("2025-07-01"), t1 = Date.parse("2027-01-03");
-  const W = 1000, H = 330, L = 46, R = 12, T = 26, B = 42;
-  const x = d => L + (Date.parse(d) - t0) / (t1 - t0) * (W - L - R);
-  const y = v => T + (115 - v) / (115 - 58) * (H - T - B);
-  const pts = a => a.map(p => `${x(p[0]).toFixed(1)},${y(p[1]).toFixed(1)}`).join(" ");
-  const all = monthly.concat(weekly);
-
-  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">`;
-  // y gridlines
-  for (const v of [60,70,80,90,100,110]) {
-    s += `<line x1="${L}" y1="${y(v)}" x2="${W-R}" y2="${y(v)}" stroke="#E2E8F0" stroke-width="1"/>
-          <text x="${L-8}" y="${y(v)+4}" font-size="11" fill="#4A5568" text-anchor="end">${v}%</text>`;
-  }
-  // x month labels
-  const months = ["2025-07-01","2025-08-01","2025-09-01","2025-10-01","2025-11-01","2025-12-01","2026-01-01","2026-02-01","2026-03-01","2026-04-01","2026-05-01","2026-06-01","2026-07-01","2026-08-01","2026-09-01","2026-10-01","2026-11-01","2026-12-01"];
-  const mNames = ["Jul","Aug","Sep","Oct","Nov","Dec","Jan 26","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  months.forEach((m, i) => {
-    s += `<line x1="${x(m)}" y1="${T}" x2="${x(m)}" y2="${H-B}" stroke="#F1F5F9" stroke-width="1"/>
-          <text x="${x(m)}" y="${H-B+16}" font-size="11" fill="#4A5568" text-anchor="middle">${mNames[i]}</text>`;
-  });
-  // FY end marker
-  s += `<line x1="${x("2026-06-30")}" y1="${T}" x2="${x("2026-06-30")}" y2="${H-B}" stroke="#94A3B8" stroke-width="1" stroke-dasharray="2 3"/>
-        <text x="${x("2026-06-30")-4}" y="${T+10}" font-size="10" fill="#4A5568" text-anchor="end">FY end</text>`;
-  // 85% target line
-  s += `<line x1="${L}" y1="${y(85)}" x2="${W-R}" y2="${y(85)}" stroke="#DC2626" stroke-width="1.6" stroke-dasharray="7 5"/>
-        <text x="${W-R-4}" y="${y(85)-6}" font-size="11" font-weight="700" fill="#DC2626" text-anchor="end">85% target</text>`;
-  // delivery markers
-  deliveries.forEach((d, i) => {
-    s += `<line x1="${x(d[0])}" y1="${y(58)}" x2="${x(d[0])}" y2="${T+14}" stroke="#E87722" stroke-width="1.6" stroke-dasharray="4 3"/>
-          <text x="${x(d[0])}" y="${H-B-4}" font-size="10" font-weight="700" fill="#E87722" text-anchor="middle">▲</text>`;
-  });
-  s += `<text x="${x("2026-04-08")}" y="${T+10}" font-size="11" font-weight="700" fill="#E87722" text-anchor="middle">Batch 1: +32 (8 Apr)</text>
-        <text x="${x("2026-06-10")}" y="${T+24}" font-size="11" font-weight="700" fill="#E87722" text-anchor="middle">Batch 2: +96 (3–17 Jun)</text>
-        <text x="${x("2026-08-26")}" y="${T+10}" font-size="11" font-weight="700" fill="#E87722" text-anchor="middle">Batch 3: +32 (26 Aug)</text>`;
-  // occupancy lines — actual (solid) then projection (dashed)
-  s += `<polyline points="${pts(all)}" fill="none" stroke="#0D7377" stroke-width="2.6" stroke-linejoin="round"/>`;
-  s += `<polyline points="${pts(proj)}" fill="none" stroke="#0D7377" stroke-width="2.2" stroke-dasharray="5 5" opacity=".6" stroke-linejoin="round"/>`;
-  all.forEach(p => { s += `<circle cx="${x(p[0])}" cy="${y(p[1])}" r="3" fill="#0D7377"/>`; });
-  // projected 85% crossing marker
-  s += `<circle cx="${x("2026-10-14")}" cy="${y(85.5)}" r="5.5" fill="none" stroke="#1D7A4A" stroke-width="2.4"/>
-        <text x="${x("2026-10-14")+9}" y="${y(85.5)+16}" font-size="11" font-weight="700" fill="#1D7A4A">≥85% ~14 Oct (proj.)</text>`;
-  // legend
-  s += `<line x1="${L+6}" y1="${H-6}" x2="${L+30}" y2="${H-6}" stroke="#0D7377" stroke-width="2.6"/><text x="${L+36}" y="${H-2}" font-size="11" fill="#4A5568">Actual avg MSU occupancy (monthly to Mar, weekly from Apr)</text>
-        <line x1="${L+390}" y1="${H-6}" x2="${L+414}" y2="${H-6}" stroke="#0D7377" stroke-width="2.2" stroke-dasharray="5 5" opacity=".6"/><text x="${L+420}" y="${H-2}" font-size="11" fill="#4A5568">Projected (past uptake + seasonal trend)</text>
-        <line x1="${L+660}" y1="${H-6}" x2="${L+684}" y2="${H-6}" stroke="#E87722" stroke-width="1.6" stroke-dasharray="4 3"/><text x="${L+690}" y="${H-2}" font-size="11" fill="#4A5568">MSU delivery</text>`;
-  s += `</svg>`;
-  return s;
-}
-
-function chartCard(k) {
-  return `
-    <div class="card wide ${k.status}">
-      <div class="kpi-title">${k.kpi}</div>
-      <span class="pill ${k.status}">${STATUS[k.status]}</span>
-      ${occChart()}
-      <div class="chart-notes">
-        <strong>Batch 1 — +32 MSUs (8 Apr, assembled 9–10 Apr):</strong> occupancy never fell below 90% and was back to 100% within 7 weeks — the 85%-in-4-months target (due 8 Aug) was never breached. <strong>Achieved.</strong><br>
-        <strong>Batch 2 — +96 MSUs (32/week, 3–17 Jun; a 44% fleet increase):</strong> occupancy troughed at 78% and stabilised at ~80–81% within two weeks of the final tranche — projected to cross 85% around 14 Oct, inside the 4-month window (due mid-Oct). <strong>On track.</strong><br>
-        <strong>Batch 3 — +32 MSUs (due 26 Aug):</strong> projection absorbs the dilution (~77% on delivery) and still crosses 85% by mid-October — more than 10 weeks ahead of its 26 Dec deadline, climbing to ~95% by year end. <em>Projection assumes absorption in line with past uptake (~9 units/wk after the Apr batch, ~6/wk through spring, tapering in Dec) and mirrors last year's seasonal pattern (Jul 77% → Sep 101%, Dec 95%).</em>
-      </div>
-    </div>`;
-}
-
-document.getElementById("sections").innerHTML = DATA.map(s => `
-  <section>
-    <h2>${s.section}</h2>
-    <div class="cards">
-      ${s.kpis.map(k => k.chart ? chartCard(k) : `
-        <div class="card ${k.status}">
-          <div class="kpi-title">${k.kpi}</div>
-          ${gauge(k)}
-          <div class="gauge-value ${k.status}">${centreValue(k)}</div>
-          ${k.tlabel ? `<div class="gauge-target">${k.tlabel}</div>` : ""}
-          <span class="pill ${k.status}">${STATUS[k.status]}</span>
-          <div class="prog">${k.progress}</div>
-        </div>`).join("")}
-    </div>
-  </section>`).join("");
-</script>
+<footer>Stash + Lode — Leadership Reporting Hub · FY 2025/26</footer>
 </body>
 </html>

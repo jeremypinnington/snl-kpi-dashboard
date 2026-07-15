@@ -224,7 +224,7 @@ function pie(d) {
   const midDepot = (d.depot / 100) * 360 / 2 - 90;         // mid-angle of depot slice (deg)
   const midClient = (d.depot / 100) * 360 + (d.client / 100) * 360 / 2 - 90;
   const lbl = (pct, ang, col) => {
-    const rad = ang * Math.PI / 180, lr = 39;
+    const rad = ang * Math.PI / 180, lr = 62;
     return `<text x="${(90 + Math.cos(rad) * lr).toFixed(1)}" y="${(90 + Math.sin(rad) * lr + 4).toFixed(1)}"
       font-size="13" font-weight="700" fill="#fff" text-anchor="middle">${pct}%</text>`;
   };

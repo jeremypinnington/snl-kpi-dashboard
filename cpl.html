@@ -70,6 +70,8 @@
   th:first-child, td:first-child { text-align: left; }
   td { padding: 7px 10px; text-align: right; border-bottom: 1px solid var(--bg-gray); white-space: nowrap; }
   td:first-child { font-weight: 600; }
+  .rank { color: #A5B4C8; font-weight: 700; font-size: 10.5px; margin-right: 7px; }
+  th .dir { color: var(--teal); font-size: 10px; margin-left: 4px; }
   .tnote { font-size: 12px; color: var(--gray); font-style: italic; margin-top: 10px; }
   footer { text-align: center; font-size: 12px; color: var(--gray); padding-bottom: 40px; }
 </style>
@@ -122,7 +124,7 @@
         </tr></thead>
         <tbody></tbody>
       </table>
-      <div class="tnote">Cells shaded green (strong) → red (weak) within each column. Click a column header to sort. Locations with zero conversions show CPL as “—”.</div>
+      <div class="tnote">Cells shaded green (strong) → red (weak) within each column, with each location's rank (#1 = best) shown in light grey. Click a column header to sort ascending or descending. Locations with zero conversions show CPL as “—”.</div>
     </div>
   </section>
 </main>
@@ -310,6 +312,24 @@ const maxConv = Math.max(...DATA.map(d => d.conv));
 const cplVals = withConv.map(d => d.cpl);
 const minCpl = Math.min(...cplVals), maxCpl = Math.max(...cplVals);
 
+// Fixed ranks per column: #1 = best (highest for volume/rate metrics, lowest for cost; nulls unranked)
+function buildRanks(key, lowIsBest) {
+  const ranked = DATA.filter(d => d[key] !== null)
+    .sort((a, b) => lowIsBest ? a[key] - b[key] : b[key] - a[key]);
+  const m = {};
+  ranked.forEach((d, i) => { m[d.loc] = i + 1; });
+  return m;
+}
+const RANKS = {
+  imp: buildRanks("imp", false),
+  clk: buildRanks("clk", false),
+  cr: buildRanks("cr", false),
+  conv: buildRanks("conv", false),
+  cpl: buildRanks("cpl", true)
+};
+const rk = (key, d) => RANKS[key][d.loc] ? `<span class="rank">#${RANKS[key][d.loc]}</span>` : "";
+
+const TH_LABELS = { loc: "Location", imp: "Impressions", clk: "Clicks", cr: "Conv. rate", conv: "Conversions", cpl: "Cost / conv." };
 let sortKey = "clk", sortDir = -1;
 function render() {
   const rows = [...DATA].sort((a, b) => {
@@ -322,12 +342,16 @@ function render() {
   document.querySelector("#tbl tbody").innerHTML = rows.map(d => `
     <tr>
       <td>${d.loc}</td>
-      <td style="background:${shade(Math.sqrt(d.imp / maxImp))}">${d.imp.toLocaleString()}</td>
-      <td style="background:${shade(Math.sqrt(d.clk / maxClk))}">${d.clk.toLocaleString()}</td>
-      <td style="background:${shade(d.cr / maxCr)}">${d.cr.toFixed(2)}%</td>
-      <td style="background:${shade(Math.sqrt(d.conv / maxConv))}">${d.conv}</td>
-      <td style="background:${d.cpl === null ? "rgba(156,195,230,.25)" : shade(1 - (d.cpl - minCpl) / (maxCpl - minCpl))}">${d.cpl === null ? "—" : "$" + d.cpl.toFixed(2)}</td>
+      <td style="background:${shade(Math.sqrt(d.imp / maxImp))}">${rk("imp", d)}${d.imp.toLocaleString()}</td>
+      <td style="background:${shade(Math.sqrt(d.clk / maxClk))}">${rk("clk", d)}${d.clk.toLocaleString()}</td>
+      <td style="background:${shade(d.cr / maxCr)}">${rk("cr", d)}${d.cr.toFixed(2)}%</td>
+      <td style="background:${shade(Math.sqrt(d.conv / maxConv))}">${rk("conv", d)}${d.conv}</td>
+      <td style="background:${d.cpl === null ? "rgba(156,195,230,.25)" : shade(1 - (d.cpl - minCpl) / (maxCpl - minCpl))}">${rk("cpl", d)}${d.cpl === null ? "—" : "$" + d.cpl.toFixed(2)}</td>
     </tr>`).join("");
+  document.querySelectorAll("#tbl th").forEach(th => {
+    const k = th.dataset.k;
+    th.innerHTML = TH_LABELS[k] + (k === sortKey ? `<span class="dir">${sortDir === 1 ? "▲" : "▼"}</span>` : "");
+  });
 }
 document.querySelectorAll("#tbl th").forEach(th => th.addEventListener("click", () => {
   const k = th.dataset.k;

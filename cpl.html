@@ -174,13 +174,11 @@ const totClk = DATA.reduce((a, d) => a + d.clk, 0);
 const totConv = DATA.reduce((a, d) => a + d.conv, 0);
 const totCost = DATA.reduce((a, d) => a + (d.cpl ? d.cpl * d.conv : 0), 0);
 const withConv = DATA.filter(d => d.cpl);
-const best = withConv.reduce((a, b) => a.cpl < b.cpl ? a : b);
 document.getElementById("summary").innerHTML = `
   <div class="stat"><div class="num">${totImp.toLocaleString()}</div><div class="lbl">Impressions</div></div>
   <div class="stat"><div class="num">${totClk.toLocaleString()}</div><div class="lbl">Clicks</div></div>
   <div class="stat"><div class="num">${totConv.toFixed(0)}</div><div class="lbl">Conversions</div></div>
-  <div class="stat"><div class="num">$${(totCost / totConv).toFixed(2)}</div><div class="lbl">Blended cost / conv.</div></div>
-  <div class="stat"><div class="num" style="font-size:18px;line-height:1.9">${best.loc}</div><div class="lbl">Best CPL — $${best.cpl.toFixed(2)}</div></div>`;
+  <div class="stat"><div class="num">$${(totCost / totConv).toFixed(2)}</div><div class="lbl">Blended cost / conv.</div></div>`;
 
 // ---- Colour scale (CPL: low = good/green) ----
 function cplColor(cpl) {

@@ -74,6 +74,17 @@
   .other .bd-fill { background: #94A3B8; }
   .bd-desc { font-size: 13px; color: var(--gray); }
   .bd-note { font-size: 12px; color: var(--gray); font-style: italic; margin-top: 12px; }
+
+  .pies { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+  .pie-card {
+    background: #fff; border-radius: 10px; padding: 22px 20px;
+    box-shadow: 0 1px 3px rgba(28,28,46,.08); border-top: 4px solid var(--teal);
+    display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;
+  }
+  .pie-card h4 { font-size: 15px; }
+  .pie-card .units { font-size: 12.5px; color: var(--gray); font-weight: 600; }
+  .pie-legend { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; font-size: 13px; color: var(--gray); }
+  .pie-legend .sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
   footer { text-align: center; font-size: 12px; color: var(--gray); padding-bottom: 40px; }
 </style>
 </head>
@@ -193,7 +204,51 @@
       </div>
     </div>
   </section>
+
+  <section>
+    <h2>Current location spread by type of unit</h2>
+    <div class="pies" id="pies"></div>
+  </section>
 </main>
+<script>
+const PIE_DATA = [
+  { type: "T2", units: 314, depot: 81.5, client: 18.5 },
+  { type: "T3", units: 5, depot: 60, client: 40 }
+];
+const DEPOT_C = "#1B3A6B", CLIENT_C = "#E87722";
+
+function pie(d) {
+  const r = 62, c = 2 * Math.PI * r;
+  const depotLen = c * d.depot / 100;
+  // depot segment drawn on top of a full client-coloured ring, both rotated to start at 12 o'clock
+  const midDepot = (d.depot / 100) * 360 / 2 - 90;         // mid-angle of depot slice (deg)
+  const midClient = (d.depot / 100) * 360 + (d.client / 100) * 360 / 2 - 90;
+  const lbl = (pct, ang, col) => {
+    const rad = ang * Math.PI / 180, lr = 39;
+    return `<text x="${(90 + Math.cos(rad) * lr).toFixed(1)}" y="${(90 + Math.sin(rad) * lr + 4).toFixed(1)}"
+      font-size="13" font-weight="700" fill="#fff" text-anchor="middle">${pct}%</text>`;
+  };
+  return `
+  <div class="pie-card">
+    <h4>${d.type} units</h4>
+    <div class="units">${d.units} units in fleet</div>
+    <svg viewBox="0 0 180 180" width="180" height="180" xmlns="http://www.w3.org/2000/svg">
+      <g transform="rotate(-90 90 90)">
+        <circle cx="90" cy="90" r="${r}" fill="none" stroke="${CLIENT_C}" stroke-width="52"/>
+        <circle cx="90" cy="90" r="${r}" fill="none" stroke="${DEPOT_C}" stroke-width="52"
+          stroke-dasharray="${depotLen.toFixed(1)} ${c.toFixed(1)}"/>
+      </g>
+      ${lbl(d.depot, midDepot)}
+      ${lbl(d.client, midClient)}
+    </svg>
+    <div class="pie-legend">
+      <span><span class="sw" style="background:${DEPOT_C}"></span>Depot hold — ${d.depot}%</span>
+      <span><span class="sw" style="background:${CLIENT_C}"></span>Client site — ${d.client}%</span>
+    </div>
+  </div>`;
+}
+document.getElementById("pies").innerHTML = PIE_DATA.map(pie).join("");
+</script>
 <footer>Stash + Lode — Mobile Storage Clients · Market &amp; Client Profile</footer>
 </body>
 </html>
